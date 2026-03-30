@@ -1,1440 +1,705 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2685.4">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px '.AppleSystemUIFontMonospaced'; color: #52ebe8; -webkit-text-stroke: #52ebe8}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px '.AppleSystemUIFontMonospaced'; color: #8a8880; -webkit-text-stroke: #8a8880; min-height: 11.0px}
-    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px '.AppleSystemUIFontMonospaced'; color: #f9f8f2; -webkit-text-stroke: #f9f8f2}
-    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px '.AppleSystemUIFontMonospaced'; color: #ef6372; -webkit-text-stroke: #ef6372}
-    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px '.AppleSystemUIFontMonospaced'; color: #8ce951; -webkit-text-stroke: #8ce951}
-    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px '.AppleSystemUIFontMonospaced'; color: #6e7586; -webkit-text-stroke: #6e7586}
-    span.s1 {font-kerning: none; background-color: #242423}
-    span.s2 {font-kerning: none}
-    span.s3 {font-kerning: none; color: #ef6372; background-color: #242423; -webkit-text-stroke: 0px #ef6372}
-    span.s4 {font-kerning: none; color: #8ce951; background-color: #242423; -webkit-text-stroke: 0px #8ce951}
-    span.s5 {font-kerning: none; color: #f9f8f2; background-color: #242423; -webkit-text-stroke: 0px #f9f8f2}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#f7f5f0">
+<title>Catalyst — Reflective Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#1a1a18;--ink-mid:#4a4a46;--ink-soft:#8a8a84;--ink-faint:#c8c8c0;
+  --paper:#f7f5f0;--paper-warm:#ede9e0;--pm:#e0dbd0;
+  --accent:#5c6b4a;--al:#8a9c74;--af:#dce4d4;
+  --cb:#7a5c3a;--cbg:#f0e8dc;--pb:#3a5c7a;--pbg:#dce8f0;
+  --r:12px;--fb:'DM Sans',sans-serif;--fs:'Lora',serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html{height:100%;height:-webkit-fill-available;}
+body{height:100%;height:-webkit-fill-available;font-family:var(--fb);background:var(--paper);color:var(--ink);font-size:16px;line-height:1.6;overflow:hidden;-webkit-text-size-adjust:100%;}
+
+/* ── Access screen ── */
+#access-screen{min-height:100vh;min-height:-webkit-fill-available;display:flex;align-items:center;justify-content:center;padding:24px;overflow-y:auto;}
+.access-card{background:white;border:1px solid var(--pm);border-radius:16px;padding:32px 24px;max-width:400px;width:100%;box-shadow:0 4px 24px rgba(0,0,0,.06);}
+.access-logo{font-family:var(--fs);font-size:26px;letter-spacing:-.02em;margin-bottom:6px;}
+.access-logo span{color:var(--accent);}
+.access-tag{font-size:14px;color:var(--ink-soft);margin-bottom:32px;line-height:1.6;}
+.access-card label{display:block;font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:8px;}
+.access-card input[type="password"]{width:100%;padding:14px;border-radius:var(--r);border:1.5px solid var(--pm);background:var(--paper);font-family:var(--fb);font-size:16px;color:var(--ink);outline:none;transition:border-color .2s;-webkit-appearance:none;letter-spacing:.2em;}
+.access-card input[type="password"]:focus{border-color:var(--al);}
+.access-err{margin-top:10px;font-size:13px;color:#8a3a1a;display:none;}
+.access-btn{width:100%;margin-top:16px;padding:14px;border-radius:var(--r);border:none;background:var(--accent);color:white;font-family:var(--fb);font-size:16px;font-weight:500;cursor:pointer;-webkit-appearance:none;touch-action:manipulation;}
+.access-btn:active{background:var(--al);}
+.access-note{margin-top:20px;font-size:12px;color:var(--ink-faint);line-height:1.6;text-align:center;}
+
+/* ── App ── */
+#app{display:none;flex-direction:column;height:100vh;height:-webkit-fill-available;max-width:820px;margin:0 auto;}
+
+/* ── Header ── */
+.hdr{padding:12px 16px 10px;padding-top:max(12px,env(safe-area-inset-top));border-bottom:1px solid var(--pm);display:flex;align-items:center;justify-content:space-between;background:var(--paper);flex-shrink:0;}
+.logo{font-family:var(--fs);font-size:19px;letter-spacing:-.02em;}
+.logo span{color:var(--accent);}
+.hdr-r{display:flex;gap:6px;align-items:center;}
+.mpill{font-size:10px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:20px;transition:all .5s;}
+.mpill.c{background:var(--cbg);color:var(--cb);}
+.mpill.p{background:var(--pbg);color:var(--pb);}
+.mpill.n{background:var(--paper-warm);color:var(--ink-soft);}
+.icon-btn{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--pm);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink-soft);font-size:15px;transition:all .2s;flex-shrink:0;touch-action:manipulation;}
+.icon-btn:active{background:var(--paper-warm);}
+.icon-btn.on{border-color:var(--al);color:var(--accent);background:var(--af);}
+.ebtn{padding:6px 12px;border-radius:var(--r);border:1.5px solid var(--pm);background:transparent;color:var(--ink-mid);font-family:var(--fb);font-size:12px;font-weight:500;cursor:pointer;touch-action:manipulation;}
+.ebtn:active{border-color:var(--al);color:var(--accent);}
+.ebtn:disabled{opacity:.4;cursor:not-allowed;}
+
+/* ── Conversation ── */
+.conv{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:20px 16px 12px;display:flex;flex-direction:column;gap:16px;scroll-behavior:smooth;}
+.conv::-webkit-scrollbar{width:3px;}
+.conv::-webkit-scrollbar-thumb{background:var(--pm);border-radius:2px;}
+.msg{display:flex;flex-direction:column;gap:5px;max-width:88%;}
+.msg.a{align-self:flex-start;}
+.msg.u{align-self:flex-end;}
+.bub{padding:12px 15px;border-radius:var(--r);font-size:16px;line-height:1.7;}
+.msg.a .bub{background:white;border:1px solid var(--pm);font-family:var(--fs);border-radius:4px 16px 16px 16px;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.msg.u .bub{background:var(--accent);color:white;border-radius:16px 4px 16px 16px;}
+.msg-actions{display:flex;gap:5px;align-items:center;opacity:0;transition:opacity .2s;}
+.msg.a:hover .msg-actions,.msg.a:focus-within .msg-actions{opacity:1;}
+.msg-play{background:none;border:none;cursor:pointer;color:var(--ink-faint);font-size:13px;padding:2px 4px;touch-action:manipulation;}
+.msg-play:active{color:var(--accent);}
+.msg-play.playing{color:var(--accent);}
+.atrace{display:flex;gap:4px;flex-wrap:wrap;}
+.ac{padding:2px 7px;border-radius:9px;font-weight:500;font-size:11px;}
+.ac.self{background:#f0e4f8;color:#6a3a8a;}
+.ac.system{background:#e4edf8;color:#2a4a7a;}
+.ac.relational{background:#e4f8ec;color:#2a6a4a;}
+.ac.technical{background:#f8f0e4;color:#6a4a1a;}
+.ac.overwhelm{background:#fde8e8;color:#8a2a2a;}
+.ac.affect_blocked{background:#e8eef8;color:#2a3a6a;}
+.ac.loss_of_relational_contact{background:#e8f8f0;color:#1a5a3a;}
+
+/* ── Input ── */
+.inp-area{padding:10px 16px;padding-bottom:max(16px,env(safe-area-inset-bottom));border-top:1px solid var(--pm);background:var(--paper);flex-shrink:0;}
+.inp-row{display:flex;gap:8px;align-items:flex-end;}
+textarea{flex:1;padding:12px 14px;border-radius:var(--r);border:1.5px solid var(--pm);background:white;font-family:var(--fb);font-size:16px;color:var(--ink);resize:none;min-height:48px;max-height:120px;outline:none;line-height:1.5;transition:border-color .2s;-webkit-appearance:none;}
+textarea:focus{border-color:var(--al);}
+textarea::placeholder{color:var(--ink-faint);}
+textarea:disabled{opacity:.6;}
+.mic-btn{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--pm);background:white;color:var(--ink-soft);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;touch-action:manipulation;transition:all .2s;}
+.mic-btn.listening{border-color:#c44;background:#fff0f0;color:#c44;animation:pulse 1s infinite;}
+.mic-btn:active{background:var(--paper-warm);}
+.sbtn{width:44px;height:44px;border-radius:50%;border:none;background:var(--accent);color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;touch-action:manipulation;}
+.sbtn:active{background:var(--al);}
+.sbtn:disabled{background:var(--ink-faint);}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.rnote{font-size:11px;color:var(--ink-faint);text-align:center;padding:4px 0 0;}
+
+/* ── Typing indicator ── */
+.typing{display:flex;align-items:center;gap:6px;padding:12px 15px;background:white;border:1px solid var(--pm);border-radius:4px 16px 16px 16px;width:fit-content;}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--ink-soft);animation:bounce 1.2s infinite;}
+.dot:nth-child(2){animation-delay:.2s;}.dot:nth-child(3){animation-delay:.4s;}
+@keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+
+/* ── Welcome ── */
+.welcome{flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;padding:40px 20px;text-align:center;}
+.wmark{width:52px;height:52px;border-radius:50%;background:var(--af);display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--accent);margin-bottom:6px;}
+.welcome h2{font-family:var(--fs);font-size:22px;font-weight:400;}
+.welcome p{font-size:15px;color:var(--ink-soft);max-width:320px;line-height:1.7;}
+.aerr{padding:12px 15px;background:#fdf0ec;border:1px solid #e8c4b4;border-radius:var(--r);font-size:14px;color:#8a3a1a;font-family:var(--fs);align-self:flex-start;max-width:88%;}
+
+/* ── Overlays — sheet style on mobile, centred on desktop ── */
+.ov{position:fixed;inset:0;background:rgba(26,26,24,.5);display:none;align-items:flex-end;justify-content:center;z-index:100;}
+.ov.open{display:flex;}
+@media(min-width:600px){.ov{align-items:center;padding:20px;}}
+.op{background:var(--paper);border-radius:20px 20px 0 0;max-width:540px;width:100%;padding:24px 20px;padding-bottom:max(24px,env(safe-area-inset-bottom));box-shadow:0 -4px 40px rgba(0,0,0,.15);max-height:90vh;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+@media(min-width:600px){.op{border-radius:16px;padding:32px;}}
+.sheet-handle{width:36px;height:4px;background:var(--pm);border-radius:2px;margin:0 auto 20px;}
+.op-title{font-family:var(--fs);font-size:19px;margin-bottom:6px;}
+.op-sub{font-size:13px;color:var(--ink-soft);margin-bottom:24px;line-height:1.6;}
+.support-block{display:flex;flex-direction:column;gap:10px;margin-bottom:22px;}
+.support-item{padding:13px 15px;border-radius:var(--r);border:1px solid var(--pm);background:white;}
+.support-item.primary{border-color:var(--al);background:var(--af);}
+.support-item.elevated{border-color:#d4a8b4;background:#fdf0f4;}
+.support-label{font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;color:var(--ink-soft);}
+.support-item.primary .support-label{color:var(--accent);}
+.support-item.elevated .support-label{color:#8a3a5a;}
+.support-text{font-size:13px;color:var(--ink-mid);line-height:1.6;}
+.support-text a{color:var(--ink-mid);}
+.cont-btn{width:100%;padding:14px;border-radius:var(--r);border:none;background:var(--accent);color:white;font-family:var(--fb);font-size:16px;font-weight:500;cursor:pointer;-webkit-appearance:none;touch-action:manipulation;}
+.cont-btn:active{background:var(--al);}
+
+/* ── Attunement overlay ── */
+.at-q-label{font-size:14px;color:var(--ink-mid);margin-bottom:8px;line-height:1.6;font-family:var(--fs);}
+.at-q-hint{font-size:12px;color:var(--ink-faint);margin-bottom:8px;line-height:1.5;}
+.at-textarea{width:100%;padding:12px 14px;border-radius:var(--r);border:1.5px solid var(--pm);background:var(--paper);font-family:var(--fb);font-size:16px;color:var(--ink);resize:vertical;min-height:88px;outline:none;line-height:1.6;transition:border-color .2s;-webkit-appearance:none;margin-bottom:16px;}
+.at-textarea:focus{border-color:var(--al);}
+.at-skip{padding:13px 16px;border-radius:var(--r);border:1.5px solid var(--pm);background:transparent;color:var(--ink-soft);font-family:var(--fb);font-size:14px;cursor:pointer;touch-action:manipulation;white-space:nowrap;}
+.at-skip:active{border-color:var(--al);}
+.at-play-btn{display:flex;align-items:center;gap:6px;background:none;border:none;color:var(--ink-soft);font-size:13px;cursor:pointer;padding:0;margin-bottom:12px;font-family:var(--fb);}
+.at-play-btn:active{color:var(--accent);}
+
+/* ── Export overlay ── */
+.ep-ov{position:fixed;inset:0;background:rgba(26,26,24,.5);display:none;align-items:flex-end;justify-content:center;z-index:100;}
+.ep-ov.open{display:flex;}
+@media(min-width:600px){.ep-ov{align-items:center;padding:20px;}}
+.ep{background:var(--paper);border-radius:20px 20px 0 0;max-width:680px;width:100%;max-height:92vh;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:24px 20px;padding-bottom:max(24px,env(safe-area-inset-bottom));box-shadow:0 -4px 40px rgba(0,0,0,.15);}
+@media(min-width:600px){.ep{border-radius:16px;padding:32px;}}
+.ep-hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;}
+.ep-title{font-family:var(--fs);font-size:19px;}
+.ep-sub{font-size:12px;color:var(--ink-soft);margin-top:3px;}
+.xbtn{background:none;border:none;cursor:pointer;color:var(--ink-soft);font-size:24px;line-height:1;padding:0 0 0 8px;touch-action:manipulation;}
+.es{margin-bottom:22px;}
+.es h3{font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:9px;}
+.eblock{background:white;border:1px solid var(--pm);border-radius:var(--r);padding:15px 16px;font-size:14px;line-height:1.8;color:var(--ink-mid);font-family:var(--fs);}
+.eblock p+p{margin-top:9px;}
+.msumm{display:flex;gap:9px;margin-bottom:12px;}
+.mcard{flex:1;padding:11px 13px;border-radius:var(--r);border:1px solid var(--pm);}
+.mcard.co{background:var(--cbg);border-color:#d4c0a8;}
+.mcard.pr{background:var(--pbg);border-color:#a8c0d4;}
+.mcard .mn{font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;}
+.mcard.co .mn{color:var(--cb);}.mcard.pr .mn{color:var(--pb);}
+.mcard .mc{font-size:24px;font-family:var(--fs);}
+.mcard .ml{font-size:11px;color:var(--ink-soft);margin-top:1px;}
+.abars{display:flex;flex-direction:column;gap:6px;}
+.arow{display:flex;align-items:center;gap:8px;}
+.aname{font-size:12px;width:72px;color:var(--ink-mid);flex-shrink:0;}
+.abg{flex:1;height:5px;background:var(--pm);border-radius:3px;overflow:hidden;}
+.afill{height:100%;border-radius:3px;}
+.afill.self{background:#9a5abf;}.afill.system{background:#3a6abf;}
+.afill.relational{background:#3a9a6a;}.afill.technical{background:#bf7a2a;}
+.apct{font-size:11px;color:var(--ink-soft);width:26px;text-align:right;}
+.disc{font-size:12px;color:var(--ink-soft);line-height:1.6;border-top:1px solid var(--pm);padding-top:12px;margin-top:4px;font-style:italic;}
+.cbtn{display:inline-flex;align-items:center;gap:6px;padding:10px 16px;border-radius:var(--r);border:1.5px solid var(--accent);background:transparent;color:var(--accent);font-family:var(--fb);font-size:13px;font-weight:500;cursor:pointer;margin-top:12px;touch-action:manipulation;}
+.cbtn:active{background:var(--af);}
+.at-export-label{font-size:10px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:5px;}
+</style>
 </head>
 <body>
-<p class="p1"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">&lt;</span><span class="s3">html</span><span class="s1"> lang="</span><span class="s4">en</span><span class="s1">"&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p4"><span class="s5">&lt;</span><span class="s1">head</span><span class="s5">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">&lt;</span><span class="s3">meta</span><span class="s1"> charset="</span><span class="s4">UTF-8</span><span class="s1">"&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p5"><span class="s5">&lt;</span><span class="s3">meta</span><span class="s5"> name="</span><span class="s1">viewport</span><span class="s5">" content="</span><span class="s1">width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no</span><span class="s5">"&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p5"><span class="s5">&lt;</span><span class="s3">meta</span><span class="s5"> name="</span><span class="s1">apple-mobile-web-app-capable</span><span class="s5">" content="</span><span class="s1">yes</span><span class="s5">"&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p5"><span class="s5">&lt;</span><span class="s3">meta</span><span class="s5"> name="</span><span class="s1">apple-mobile-web-app-status-bar-style</span><span class="s5">" content="</span><span class="s1">default</span><span class="s5">"&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">&lt;</span><span class="s3">meta</span><span class="s1"> name="</span><span class="s4">theme-color</span><span class="s1">" content="</span><span class="s4">#f7f5f0</span><span class="s1">"&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">&lt;</span><span class="s3">title</span><span class="s1">&gt;Catalyst — Reflective Practice&lt;/</span><span class="s3">title</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p5"><span class="s5">&lt;</span><span class="s3">link</span><span class="s5"> href="</span><span class="s1">https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&amp;family=DM+Sans:wght@300;400;500&amp;display=swap</span><span class="s5">" rel="</span><span class="s1">stylesheet</span><span class="s5">"&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p4"><span class="s5">&lt;</span><span class="s1">style</span><span class="s5">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">:root {</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>--ink:#1a1a18;--ink-mid:#4a4a46;--ink-soft:#8a8a84;--ink-faint:#c8c8c0;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>--paper:#f7f5f0;--paper-warm:#ede9e0;--pm:#e0dbd0;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>--accent:#5c6b4a;--al:#8a9c74;--af:#dce4d4;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>--cb:#7a5c3a;--cbg:#f0e8dc;--pb:#3a5c7a;--pbg:#dce8f0;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>--r:12px;--fb:'DM Sans',sans-serif;--fs:'Lora',serif;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">html{height:100%;height:-webkit-fill-available;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">body{height:100%;height:-webkit-fill-available;font-family:var(--fb);background:var(--paper);color:var(--ink);font-size:16px;line-height:1.6;overflow:hidden;-webkit-text-size-adjust:100%;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">/* ── Access screen ── */</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">#access-screen{min-height:100vh;min-height:-webkit-fill-available;display:flex;align-items:center;justify-content:center;padding:24px;overflow-y:auto;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.access-card{background:white;border:1px solid var(--pm);border-radius:16px;padding:32px 24px;max-width:400px;width:100%;box-shadow:0 4px 24px rgba(0,0,0,.06);}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.access-logo{font-family:var(--fs);font-size:26px;letter-spacing:-.02em;margin-bottom:6px;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.access-logo span{color:var(--accent);}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.access-tag{font-size:14px;color:var(--ink-soft);margin-bottom:32px;line-height:1.6;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.access-card label{display:block;font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:8px;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.access-card input[type="password"]{width:100%;padding:14px;border-radius:var(--r);border:1.5px solid var(--pm);background:var(--paper);font-family:var(--fb);font-size:16px;color:var(--ink);outline:none;transition:border-color .2s;-webkit-appearance:none;letter-spacing:.2em;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.access-card input[type="password"]:focus{border-color:var(--al);}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.access-err{margin-top:10px;font-size:13px;color:#8a3a1a;display:none;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.access-btn{width:100%;margin-top:16px;padding:14px;border-radius:var(--r);border:none;background:var(--accent);color:white;font-family:var(--fb);font-size:16px;font-weight:500;cursor:pointer;-webkit-appearance:none;touch-action:manipulation;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.access-btn:active{background:var(--al);}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.access-note{margin-top:20px;font-size:12px;color:var(--ink-faint);line-height:1.6;text-align:center;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">/* ── App ── */</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">#app{display:none;flex-direction:column;height:100vh;height:-webkit-fill-available;max-width:820px;margin:0 auto;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">/* ── Header ── */</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.hdr{padding:12px 16px 10px;padding-top:max(12px,env(safe-area-inset-top));border-bottom:1px solid var(--pm);display:flex;align-items:center;justify-content:space-between;background:var(--paper);flex-shrink:0;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.logo{font-family:var(--fs);font-size:19px;letter-spacing:-.02em;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.logo span{color:var(--accent);}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.hdr-r{display:flex;gap:6px;align-items:center;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.mpill{font-size:10px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:20px;transition:all .5s;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.mpill.c{background:var(--cbg);color:var(--cb);}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.mpill.p{background:var(--pbg);color:var(--pb);}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.mpill.n{background:var(--paper-warm);color:var(--ink-soft);}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.icon-btn{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--pm);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink-soft);font-size:15px;transition:all .2s;flex-shrink:0;touch-action:manipulation;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.icon-btn:active{background:var(--paper-warm);}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.icon-btn.on{border-color:var(--al);color:var(--accent);background:var(--af);}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.ebtn{padding:6px 12px;border-radius:var(--r);border:1.5px solid var(--pm);background:transparent;color:var(--ink-mid);font-family:var(--fb);font-size:12px;font-weight:500;cursor:pointer;touch-action:manipulation;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.ebtn:active{border-color:var(--al);color:var(--accent);}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.ebtn:disabled{opacity:.4;cursor:not-allowed;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">/* ── Conversation ── */</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.conv{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:20px 16px 12px;display:flex;flex-direction:column;gap:16px;scroll-behavior:smooth;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.conv::-webkit-scrollbar{width:3px;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.conv::-webkit-scrollbar-thumb{background:var(--pm);border-radius:2px;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.msg{display:flex;flex-direction:column;gap:5px;max-width:88%;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.msg.a{align-self:flex-start;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.msg.u{align-self:flex-end;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.bub{padding:12px 15px;border-radius:var(--r);font-size:16px;line-height:1.7;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.msg.a .bub{background:white;border:1px solid var(--pm);font-family:var(--fs);border-radius:4px 16px 16px 16px;box-shadow:0 1px 3px rgba(0,0,0,.04);}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.msg.u .bub{background:var(--accent);color:white;border-radius:16px 4px 16px 16px;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.msg-actions{display:flex;gap:5px;align-items:center;opacity:0;transition:opacity .2s;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.msg.a:hover .msg-actions,.msg.a:focus-within .msg-actions{opacity:1;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.msg-play{background:none;border:none;cursor:pointer;color:var(--ink-faint);font-size:13px;padding:2px 4px;touch-action:manipulation;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.msg-play:active{color:var(--accent);}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.msg-play.playing{color:var(--accent);}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.atrace{display:flex;gap:4px;flex-wrap:wrap;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.ac{padding:2px 7px;border-radius:9px;font-weight:500;font-size:11px;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.ac.self{background:#f0e4f8;color:#6a3a8a;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.ac.system{background:#e4edf8;color:#2a4a7a;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.ac.relational{background:#e4f8ec;color:#2a6a4a;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.ac.technical{background:#f8f0e4;color:#6a4a1a;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.ac.overwhelm{background:#fde8e8;color:#8a2a2a;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.ac.affect_blocked{background:#e8eef8;color:#2a3a6a;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.ac.loss_of_relational_contact{background:#e8f8f0;color:#1a5a3a;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">/* ── Input ── */</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.inp-area{padding:10px 16px;padding-bottom:max(16px,env(safe-area-inset-bottom));border-top:1px solid var(--pm);background:var(--paper);flex-shrink:0;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.inp-row{display:flex;gap:8px;align-items:flex-end;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">textarea{flex:1;padding:12px 14px;border-radius:var(--r);border:1.5px solid var(--pm);background:white;font-family:var(--fb);font-size:16px;color:var(--ink);resize:none;min-height:48px;max-height:120px;outline:none;line-height:1.5;transition:border-color .2s;-webkit-appearance:none;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">textarea:focus{border-color:var(--al);}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">textarea::placeholder{color:var(--ink-faint);}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">textarea:disabled{opacity:.6;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.mic-btn{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--pm);background:white;color:var(--ink-soft);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;touch-action:manipulation;transition:all .2s;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.mic-btn.listening{border-color:#c44;background:#fff0f0;color:#c44;animation:pulse 1s infinite;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.mic-btn:active{background:var(--paper-warm);}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.sbtn{width:44px;height:44px;border-radius:50%;border:none;background:var(--accent);color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;touch-action:manipulation;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.sbtn:active{background:var(--al);}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.sbtn:disabled{background:var(--ink-faint);}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.rnote{font-size:11px;color:var(--ink-faint);text-align:center;padding:4px 0 0;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">/* ── Typing indicator ── */</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.typing{display:flex;align-items:center;gap:6px;padding:12px 15px;background:white;border:1px solid var(--pm);border-radius:4px 16px 16px 16px;width:fit-content;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.dot{width:5px;height:5px;border-radius:50%;background:var(--ink-soft);animation:bounce 1.2s infinite;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.dot:nth-child(2){animation-delay:.2s;}.dot:nth-child(3){animation-delay:.4s;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">@keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">/* ── Welcome ── */</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.welcome{flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;padding:40px 20px;text-align:center;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.wmark{width:52px;height:52px;border-radius:50%;background:var(--af);display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--accent);margin-bottom:6px;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.welcome h2{font-family:var(--fs);font-size:22px;font-weight:400;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.welcome p{font-size:15px;color:var(--ink-soft);max-width:320px;line-height:1.7;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.aerr{padding:12px 15px;background:#fdf0ec;border:1px solid #e8c4b4;border-radius:var(--r);font-size:14px;color:#8a3a1a;font-family:var(--fs);align-self:flex-start;max-width:88%;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">/* ── Overlays — sheet style on mobile, centred on desktop ── */</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.ov{position:fixed;inset:0;background:rgba(26,26,24,.5);display:none;align-items:flex-end;justify-content:center;z-index:100;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.ov.open{display:flex;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">@media(min-width:600px){.ov{align-items:center;padding:20px;}}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.op{background:var(--paper);border-radius:20px 20px 0 0;max-width:540px;width:100%;padding:24px 20px;padding-bottom:max(24px,env(safe-area-inset-bottom));box-shadow:0 -4px 40px rgba(0,0,0,.15);max-height:90vh;overflow-y:auto;-webkit-overflow-scrolling:touch;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">@media(min-width:600px){.op{border-radius:16px;padding:32px;}}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.sheet-handle{width:36px;height:4px;background:var(--pm);border-radius:2px;margin:0 auto 20px;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.op-title{font-family:var(--fs);font-size:19px;margin-bottom:6px;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.op-sub{font-size:13px;color:var(--ink-soft);margin-bottom:24px;line-height:1.6;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.support-block{display:flex;flex-direction:column;gap:10px;margin-bottom:22px;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.support-item{padding:13px 15px;border-radius:var(--r);border:1px solid var(--pm);background:white;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.support-item.primary{border-color:var(--al);background:var(--af);}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.support-item.elevated{border-color:#d4a8b4;background:#fdf0f4;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.support-label{font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;color:var(--ink-soft);}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.support-item.primary .support-label{color:var(--accent);}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.support-item.elevated .support-label{color:#8a3a5a;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.support-text{font-size:13px;color:var(--ink-mid);line-height:1.6;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.support-text a{color:var(--ink-mid);}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.cont-btn{width:100%;padding:14px;border-radius:var(--r);border:none;background:var(--accent);color:white;font-family:var(--fb);font-size:16px;font-weight:500;cursor:pointer;-webkit-appearance:none;touch-action:manipulation;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.cont-btn:active{background:var(--al);}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">/* ── Attunement overlay ── */</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.at-q-label{font-size:14px;color:var(--ink-mid);margin-bottom:8px;line-height:1.6;font-family:var(--fs);}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.at-q-hint{font-size:12px;color:var(--ink-faint);margin-bottom:8px;line-height:1.5;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.at-textarea{width:100%;padding:12px 14px;border-radius:var(--r);border:1.5px solid var(--pm);background:var(--paper);font-family:var(--fb);font-size:16px;color:var(--ink);resize:vertical;min-height:88px;outline:none;line-height:1.6;transition:border-color .2s;-webkit-appearance:none;margin-bottom:16px;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.at-textarea:focus{border-color:var(--al);}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.at-skip{padding:13px 16px;border-radius:var(--r);border:1.5px solid var(--pm);background:transparent;color:var(--ink-soft);font-family:var(--fb);font-size:14px;cursor:pointer;touch-action:manipulation;white-space:nowrap;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.at-skip:active{border-color:var(--al);}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.at-play-btn{display:flex;align-items:center;gap:6px;background:none;border:none;color:var(--ink-soft);font-size:13px;cursor:pointer;padding:0;margin-bottom:12px;font-family:var(--fb);}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.at-play-btn:active{color:var(--accent);}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">/* ── Export overlay ── */</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.ep-ov{position:fixed;inset:0;background:rgba(26,26,24,.5);display:none;align-items:flex-end;justify-content:center;z-index:100;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.ep-ov.open{display:flex;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">@media(min-width:600px){.ep-ov{align-items:center;padding:20px;}}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.ep{background:var(--paper);border-radius:20px 20px 0 0;max-width:680px;width:100%;max-height:92vh;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:24px 20px;padding-bottom:max(24px,env(safe-area-inset-bottom));box-shadow:0 -4px 40px rgba(0,0,0,.15);}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">@media(min-width:600px){.ep{border-radius:16px;padding:32px;}}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.ep-hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.ep-title{font-family:var(--fs);font-size:19px;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.ep-sub{font-size:12px;color:var(--ink-soft);margin-top:3px;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.xbtn{background:none;border:none;cursor:pointer;color:var(--ink-soft);font-size:24px;line-height:1;padding:0 0 0 8px;touch-action:manipulation;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.es{margin-bottom:22px;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.es h3{font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:9px;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.eblock{background:white;border:1px solid var(--pm);border-radius:var(--r);padding:15px 16px;font-size:14px;line-height:1.8;color:var(--ink-mid);font-family:var(--fs);}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.eblock p+p{margin-top:9px;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.msumm{display:flex;gap:9px;margin-bottom:12px;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.mcard{flex:1;padding:11px 13px;border-radius:var(--r);border:1px solid var(--pm);}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.mcard.co{background:var(--cbg);border-color:#d4c0a8;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.mcard.pr{background:var(--pbg);border-color:#a8c0d4;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.mcard .mn{font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.mcard.co .mn{color:var(--cb);}.mcard.pr .mn{color:var(--pb);}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.mcard .mc{font-size:24px;font-family:var(--fs);}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.mcard .ml{font-size:11px;color:var(--ink-soft);margin-top:1px;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.abars{display:flex;flex-direction:column;gap:6px;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.arow{display:flex;align-items:center;gap:8px;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.aname{font-size:12px;width:72px;color:var(--ink-mid);flex-shrink:0;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.abg{flex:1;height:5px;background:var(--pm);border-radius:3px;overflow:hidden;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.afill{height:100%;border-radius:3px;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.afill.self{background:#9a5abf;}.afill.system{background:#3a6abf;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.afill.relational{background:#3a9a6a;}.afill.technical{background:#bf7a2a;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.apct{font-size:11px;color:var(--ink-soft);width:26px;text-align:right;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.disc{font-size:12px;color:var(--ink-soft);line-height:1.6;border-top:1px solid var(--pm);padding-top:12px;margin-top:4px;font-style:italic;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.cbtn{display:inline-flex;align-items:center;gap:6px;padding:10px 16px;border-radius:var(--r);border:1.5px solid var(--accent);background:transparent;color:var(--accent);font-family:var(--fb);font-size:13px;font-weight:500;cursor:pointer;margin-top:12px;touch-action:manipulation;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.cbtn:active{background:var(--af);}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">.at-export-label{font-size:10px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:5px;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p4"><span class="s5">&lt;/</span><span class="s1">style</span><span class="s5">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p4"><span class="s5">&lt;/</span><span class="s1">head</span><span class="s5">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p4"><span class="s5">&lt;</span><span class="s1">body</span><span class="s5">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p6"><span class="s1">&lt;!-- Access screen --&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p5"><span class="s5">&lt;</span><span class="s3">div</span><span class="s5"> id="</span><span class="s1">access-screen</span><span class="s5">"&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">access-card</span><span class="s1">"&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">access-logo</span><span class="s1">"&gt;Catalyst&lt;</span><span class="s3">span</span><span class="s1">&gt;.&lt;/</span><span class="s3">span</span><span class="s1">&gt;&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">access-tag</span><span class="s1">"&gt;A reflective practice tool for GPs and GP trainees. A space to think — without agenda, without assessment.&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>&lt;</span><span class="s3">label</span><span class="s1"> for="</span><span class="s4">code-input</span><span class="s1">"&gt;Access code&lt;/</span><span class="s3">label</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>&lt;</span><span class="s3">input</span><span class="s1"> type="</span><span class="s4">password</span><span class="s1">" id="</span><span class="s4">code-input</span><span class="s1">" placeholder="</span><span class="s4">······</span><span class="s1">" autocomplete="</span><span class="s4">off</span><span class="s1">" onkeydown="</span><span class="s4">if(event.key==='Enter')checkCode()</span><span class="s1">"&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">access-err</span><span class="s1">" id="</span><span class="s4">access-err</span><span class="s1">"&gt;That code isn't right — check with the person who sent you the link.&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>&lt;</span><span class="s3">button</span><span class="s1"> class="</span><span class="s4">access-btn</span><span class="s1">" onclick="</span><span class="s4">checkCode()</span><span class="s1">"&gt;Enter →&lt;/</span><span class="s3">button</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">access-note</span><span class="s1">"&gt;Your reflections stay in your browser. Nothing is stored or shared.&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p6"><span class="s1">&lt;!-- Main app --&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">&lt;</span><span class="s3">div</span><span class="s1"> id="</span><span class="s4">app</span><span class="s1">"&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">hdr</span><span class="s1">"&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">logo</span><span class="s1">"&gt;Catalyst&lt;</span><span class="s3">span</span><span class="s1">&gt;.&lt;/</span><span class="s3">span</span><span class="s1">&gt;&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">hdr-r</span><span class="s1">"&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">mpill n</span><span class="s1">" id="</span><span class="s4">mpill</span><span class="s1">"&gt;—&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>&lt;</span><span class="s3">button</span><span class="s1"> class="</span><span class="s4">icon-btn</span><span class="s1">" id="</span><span class="s4">audio-toggle</span><span class="s1">" onclick="</span><span class="s4">toggleAudio()</span><span class="s1">" title="</span><span class="s4">Toggle audio</span><span class="s1">"&gt;♪&lt;/</span><span class="s3">button</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>&lt;</span><span class="s3">button</span><span class="s1"> class="</span><span class="s4">ebtn</span><span class="s1">" id="</span><span class="s4">expbtn</span><span class="s1">" disabled onclick="</span><span class="s4">showOffRamp()</span><span class="s1">"&gt;Summary&lt;/</span><span class="s3">button</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">conv</span><span class="s1">" id="</span><span class="s4">conv</span><span class="s1">"&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">welcome</span><span class="s1">" id="</span><span class="s4">welcome</span><span class="s1">"&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">wmark</span><span class="s1">"&gt;◎&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>&lt;</span><span class="s3">h2</span><span class="s1">&gt;A space to think&lt;/</span><span class="s3">h2</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>&lt;</span><span class="s3">p</span><span class="s1">&gt;A reflective conversation. No right answers, no performance criteria — just a chance to think about your practice.&lt;/</span><span class="s3">p</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>&lt;</span><span class="s3">p</span><span class="s1"> style="</span><span class="s4">margin-top:4px;font-size:13px;color:var(--ink-faint)</span><span class="s1">"&gt;When you're ready, share what's on your mind.&lt;/</span><span class="s3">p</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">inp-area</span><span class="s1">"&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">inp-row</span><span class="s1">"&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>&lt;</span><span class="s3">button</span><span class="s1"> class="</span><span class="s4">mic-btn</span><span class="s1">" id="</span><span class="s4">mic-btn</span><span class="s1">" onclick="</span><span class="s4">toggleMic()</span><span class="s1">" title="</span><span class="s4">Speak</span><span class="s1">"&gt;🎤&lt;/</span><span class="s3">button</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>&lt;</span><span class="s3">textarea</span><span class="s1"> id="</span><span class="s4">ui</span><span class="s1">" placeholder="</span><span class="s4">Share what's on your mind...</span><span class="s1">" rows="</span><span class="s4">1</span><span class="s1">"</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span>onkeydown="</span><span class="s4">handleKey(event)</span><span class="s1">" oninput="</span><span class="s4">ar(this)</span><span class="s1">"&gt;&lt;/</span><span class="s3">textarea</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>&lt;</span><span class="s3">button</span><span class="s1"> class="</span><span class="s4">sbtn</span><span class="s1">" id="</span><span class="s4">sbtn</span><span class="s1">" onclick="</span><span class="s4">send()</span><span class="s1">"&gt;↑&lt;/</span><span class="s3">button</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">rnote</span><span class="s1">"&gt;Your reflections stay in your browser only.&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p6"><span class="s1">&lt;!-- Off-ramp overlay --&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">ov</span><span class="s1">" id="</span><span class="s4">offramp-ov</span><span class="s1">"&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">op</span><span class="s1">"&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">sheet-handle</span><span class="s1">"&gt;&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">op-title</span><span class="s1">"&gt;Before you go&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">op-sub</span><span class="s1">" id="</span><span class="s4">offramp-intro</span><span class="s1">"&gt;What came up today may be worth taking further.&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p5"><span class="s5"><span class="Apple-converted-space">    </span>&lt;</span><span class="s3">div</span><span class="s5"> class="</span><span class="s1">support-block</span><span class="s5">" id="</span><span class="s1">support-block</span><span class="s5">"&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p5"><span class="s5"><span class="Apple-converted-space">      </span>&lt;</span><span class="s3">div</span><span class="s5"> class="</span><span class="s1">support-item primary</span><span class="s5">"&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span>&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">support-label</span><span class="s1">"&gt;Supervision&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span>&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">support-text</span><span class="s1">"&gt;Your educational supervisor is a good first place to take this. The summary can help start that conversation.&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">support-item</span><span class="s1">"&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span>&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">support-label</span><span class="s1">"&gt;Pastoral support&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span>&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">support-text</span><span class="s1">"&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">          </span>&lt;</span><span class="s3">strong</span><span class="s1">&gt;BMA Doctors for Doctors&lt;/</span><span class="s3">strong</span><span class="s1">&gt; — 0330 123 1245&lt;</span><span class="s3">br</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">          </span>&lt;</span><span class="s3">strong</span><span class="s1">&gt;NHS Practitioner Health&lt;/</span><span class="s3">strong</span><span class="s1">&gt; — &lt;</span><span class="s3">a</span><span class="s1"> href="</span><span class="s4">https://www.practitionerhealth.nhs.uk</span><span class="s1">" target="</span><span class="s4">_blank</span><span class="s1">"&gt;practitionerhealth.nhs.uk&lt;/</span><span class="s3">a</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">support-item</span><span class="s1">"&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span>&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">support-label</span><span class="s1">"&gt;If you're in distress right now&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span>&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">support-text</span><span class="s1">"&gt;&lt;</span><span class="s3">strong</span><span class="s1">&gt;Samaritans&lt;/</span><span class="s3">strong</span><span class="s1">&gt; — 116 123, any time&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>&lt;</span><span class="s3">button</span><span class="s1"> class="</span><span class="s4">cont-btn</span><span class="s1">" onclick="</span><span class="s4">showAttunement()</span><span class="s1">"&gt;Continue to summary →&lt;/</span><span class="s3">button</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p6"><span class="s1">&lt;!-- Attunement overlay --&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">ov</span><span class="s1">" id="</span><span class="s4">attunement-ov</span><span class="s1">"&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">op</span><span class="s1">" style="</span><span class="s4">max-width:560px</span><span class="s1">"&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">sheet-handle</span><span class="s1">"&gt;&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">op-title</span><span class="s1">"&gt;One more moment&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">op-sub</span><span class="s1">"&gt;Before your summary. There are no right answers here — this is yours.&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p5"><span class="s5"><span class="Apple-converted-space">    </span>&lt;</span><span class="s3">div</span><span class="s5"> id="</span><span class="s1">at-q1-play-row</span><span class="s5">" style="</span><span class="s1">display:none;margin-bottom:4px</span><span class="s5">"&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>&lt;</span><span class="s3">button</span><span class="s1"> class="</span><span class="s4">at-play-btn</span><span class="s1">" onclick="</span><span class="s4">playAttunementQ(1)</span><span class="s1">"&gt;▶ Hear the question&lt;/</span><span class="s3">button</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">at-q-label</span><span class="s1">" id="</span><span class="s4">at-q1-label</span><span class="s1">"&gt;What are you sitting with from this conversation?&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p5"><span class="s5"><span class="Apple-converted-space">    </span>&lt;</span><span class="s3">textarea</span><span class="s5"> class="</span><span class="s1">at-textarea</span><span class="s5">" id="</span><span class="s1">at-q1</span><span class="s5">" placeholder="</span><span class="s1">You can be as brief or as open as feels right...</span><span class="s5">"&gt;&lt;/</span><span class="s3">textarea</span><span class="s5">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p5"><span class="s5"><span class="Apple-converted-space">    </span>&lt;</span><span class="s3">div</span><span class="s5"> id="</span><span class="s1">at-q2-play-row</span><span class="s5">" style="</span><span class="s1">display:none;margin-bottom:4px</span><span class="s5">"&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>&lt;</span><span class="s3">button</span><span class="s1"> class="</span><span class="s4">at-play-btn</span><span class="s1">" onclick="</span><span class="s4">playAttunementQ(2)</span><span class="s1">"&gt;▶ Hear the question&lt;/</span><span class="s3">button</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">at-q-label</span><span class="s1">" id="</span><span class="s4">at-q2-label</span><span class="s1">"&gt;Is there anything you want to carry differently into practice?&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">at-q-hint</span><span class="s1">"&gt;Optional — leave blank if you're not sure yet.&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>&lt;</span><span class="s3">textarea</span><span class="s1"> class="</span><span class="s4">at-textarea</span><span class="s1">" id="</span><span class="s4">at-q2</span><span class="s1">" placeholder=""&gt;&lt;/</span><span class="s3">textarea</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p5"><span class="s5"><span class="Apple-converted-space">    </span>&lt;</span><span class="s3">div</span><span class="s5"> style="</span><span class="s1">display:flex;gap:10px;align-items:center</span><span class="s5">"&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>&lt;</span><span class="s3">button</span><span class="s1"> class="</span><span class="s4">cont-btn</span><span class="s1">" style="</span><span class="s4">flex:1</span><span class="s1">" onclick="</span><span class="s4">submitAttunement()</span><span class="s1">"&gt;Generate my summary →&lt;/</span><span class="s3">button</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>&lt;</span><span class="s3">button</span><span class="s1"> class="</span><span class="s4">at-skip</span><span class="s1">" onclick="</span><span class="s4">submitAttunement()</span><span class="s1">"&gt;Skip&lt;/</span><span class="s3">button</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>&lt;</span><span class="s3">div</span><span class="s1"> style="</span><span class="s4">margin-top:12px;font-size:11px;color:var(--ink-faint);text-align:center</span><span class="s1">"&gt;Your words appear in your summary exactly as you write them.&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p6"><span class="s1">&lt;!-- Export overlay --&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">ep-ov</span><span class="s1">" id="</span><span class="s4">ep-ov</span><span class="s1">" onclick="</span><span class="s4">epBgClose(event)</span><span class="s1">"&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">ep</span><span class="s1">"&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">sheet-handle</span><span class="s1">"&gt;&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">ep-hdr</span><span class="s1">"&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>&lt;</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span>&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">ep-title</span><span class="s1">"&gt;Session summary&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span>&lt;</span><span class="s3">div</span><span class="s1"> class="</span><span class="s4">ep-sub</span><span class="s1">"&gt;A trace of your reflective engagement&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>&lt;</span><span class="s3">button</span><span class="s1"> class="</span><span class="s4">xbtn</span><span class="s1">" onclick="</span><span class="s4">closeExport()</span><span class="s1">"&gt;×&lt;/</span><span class="s3">button</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p5"><span class="s5"><span class="Apple-converted-space">    </span>&lt;</span><span class="s3">div</span><span class="s5"> id="</span><span class="s1">epc</span><span class="s5">"&gt;&lt;</span><span class="s3">div</span><span class="s5"> style="</span><span class="s1">text-align:center;padding:40px;color:var(--ink-soft)</span><span class="s5">"&gt;Generating…&lt;/</span><span class="s3">div</span><span class="s5">&gt;&lt;/</span><span class="s3">div</span><span class="s5">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">&lt;/</span><span class="s3">div</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p4"><span class="s5">&lt;</span><span class="s1">script</span><span class="s5">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">// ── Config ───────────────────────────────────────────────────────────────</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">const API_KEY = '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';</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">const ACCESS_CODE = '462387';</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">const LS_KEY = 'catalyst_access';</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">// ── System prompts ───────────────────────────────────────────────────────</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">const SYS = `Your north star is: be curious, not judgemental. In every mode, at every level of disclosure, your orientation is genuine curiosity about the practitioner's experience — never assessment, never challenge, never resolution on their behalf.</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">WHO YOU ARE</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">You are a reflective practice facilitator working within the Catalytic Reflection Framework (CRF). You hold a genuine, non-directive reflective conversation with a GP or GP trainee. Simultaneously you maintain a silent structured annotation of the reflective field. The annotation is never visible to the practitioner.</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">THE ARCHITECTURE</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">Integrative meaning making requires three conditions simultaneously:</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">Emotion — affective signal. What is actually felt, not managed. Infer from: affect named and located, disclosed discomfort, surprise at own response, embodied description.</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">Cognition — disciplined interpretation. Capacity to think about experience without being overwhelmed. Infer from: coherence, sequencing, holding complexity.</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">Field — relational contact and containment. Sense of being situated in relational/systemic context. Infer from: references to others, awareness of context, relational texture.</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">Psychological safety governs emotion. Cognitive capacity governs cognition. Relational contact governs field.</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">THREE FAILURE MODES</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">OVERWHELM — emotion dominant, cognition absent. Signs: venting, fragmentation, escalating affect, recursive complaint. Facilitation: contain and ground, gently invite cognition back. "What do you make of that?" Stabilise first.</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">AFFECT BLOCKED — cognition dominant, emotion absent. Signs: role language, competency framing, portfolio-ready language, affect named only to confirm management, social smoothing when challenged. Facilitation: persistent tireless curiosity. Small specific embodied questions. Never name or challenge the pattern.</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">LOSS OF RELATIONAL CONTACT — emotion and cognition present, field absent. Signs: rumination, isolation, premature closure, projection. Facilitation: gently reintroduce relational texture. "What was it like to be with that person?"</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">TWO MODES</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">COMPASS — aperture narrowed. Task: orientation and stabilisation only. Do not press for insight.</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">PRISM — all three vertices active. Task: deepen gently, hold tension, allow meaning to emerge at practitioner's pace. Never close prematurely.</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">TRANSITIONAL — field shifting. Hold. Ask nothing or something very small.</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">FACILITATION RULES</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">1. Never use framework language with the practitioner.</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">2. 1-3 sentences per response. Brevity holds space.</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">3. Curiosity is not always a question. "That sounds like a lot." "I'm sitting with that." These are facilitation.</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">4. When practitioner signals nothing more to give: leave the door ajar. "You have. I'm just sitting with that."</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">5. Never close reflection prematurely or summarise for them.</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">6. Attend to what is absent as much as what is present.</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">7. Know the boundary. When material becomes formative, shift from deepening to containing.</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">8. Accept the session at the level it is being offered.</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">ANNOTATION — after every user turn, reply then |||ANNOTATION|||</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">[1-3 sentence reply]</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">|||ANNOTATION|||</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">{"mode":"compass|prism|transitional|unclear","failure_mode":"overwhelm|affect_blocked|loss_of_relational_contact|none","absent_vertex":"emotion|cognition|field|none","dominant_anchor":"self|system|relational|technical|none","secondary_anchors":[],"safety_estimate":"low|moderate|high|defended","capacity_estimate":"low|moderate|high","relational_contact":"low|moderate|high","polar_shift_risk":false,"polar_shift_note":null,"boundary_proximity":false,"field_signal":"one sentence","facilitator_note":"one sentence"}`;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">const EXPORT_SYS = `Generate a portfolio-appropriate reflective summary from a GP supervision session.</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">PRINCIPLES: Trace of reflection not substitute. Do NOT generate insight. Do NOT evaluate. Second person. 3-4 paragraphs. Professional and warm.</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">Translate: Compass→orientation/grounding, Prism→wider exploratory engagement, failure modes→plain descriptive language. Never use CRF terms.</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">STRUCTURE: Para 1: territory brought. Para 2: form of engagement not content. Para 3: movement or shift. Para 4 optional: invitation to supervision.</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">Write as trusted educational supervisor: honest, specific, non-evaluative. Practitioner authors their own meaning.`;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">const PROMPT_GEN_SYS = `Generate two short personalised closing prompts for a reflective practice session with a GP.</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">Mirror the register, vocabulary and cognitive style of the practitioner's language exactly.</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">First prompt: what are they sitting with — allows unresolved, no presupposed insight.</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">Second prompt: what do they want to carry differently — dispositional not behavioural, genuinely optional in framing.</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">If boundary_proximity: warmer, gentler, shorter. If affect_blocked: first prompt invites person not role. If compass throughout: simpler, no assumption of depth. If prism reached: more open.</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">Never use clinical/academic language unless practitioner used it. Never presuppose insight.</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">Respond ONLY with valid JSON: {"q1":"[prompt]","q2":"[prompt — framed optional]"}`;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">// ── State ────────────────────────────────────────────────────────────────</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">let msgs=[], anns=[], turnCount=0, attunementQ1='', attunementQ2='';</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">let audioOn=false, currentUtterance=null, recognition=null, isListening=false;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">// ── Access ───────────────────────────────────────────────────────────────</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">function checkCode() {</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>const val = document.getElementById('code-input').value.trim();</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>const err = document.getElementById('access-err');</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>if (val === ACCESS_CODE) {</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>localStorage.setItem(LS_KEY, '1');</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>document.getElementById('access-screen').style.display='none';</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>document.getElementById('app').style.display='flex';</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>setTimeout(openingTurn, 400);</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>} else {</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>err.style.display='block';</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>document.getElementById('code-input').value='';</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">function checkAccess() {</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>if (localStorage.getItem(LS_KEY) === '1') {</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>document.getElementById('access-screen').style.display='none';</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>document.getElementById('app').style.display='flex';</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>setTimeout(openingTurn, 400);</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">// ── API ──────────────────────────────────────────────────────────────────</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">async function callAPI(system, messages, maxTokens) {</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>let res, data;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>try {</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>res = await fetch('https://api.anthropic.com/v1/messages', {</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>method:'POST',</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>headers:{</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span>'Content-Type':'application/json',</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span>'x-api-key':API_KEY,</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span>'anthropic-version':'2023-06-01',</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span>'anthropic-dangerous-direct-browser-access':'true'</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>},</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:maxTokens,system,messages})</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>});</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>} catch(e) { throw new Error('Network error — check your connection'); }</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>try { data = await res.json(); } catch(e) { throw new Error('Unexpected server response ('+res.status+')'); }</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>if (!res.ok) throw new Error('API '+res.status+': '+(data?.error?.message||'unknown error'));</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>if (!data.content||!Array.isArray(data.content)) throw new Error('Unexpected response structure');</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>return data.content.map(b=&gt;b.text||'').join('');</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">// ── Conversation ─────────────────────────────────────────────────────────</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">async function openingTurn() {</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>const t=showTyping(); busy(true);</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>try {</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>const full=await callAPI(SYS,[{role:'user',content:'[Session start — generate a warm, open, field-sensitive opening question for a GP or GP trainee. 1-2 sentences only. No CRF language. Do not lead with any particular anchor.]'}],150);</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>const reply=full.split('|||ANNOTATION|||')[0].trim();</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>t.remove(); addMsg('a',reply);</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>if(audioOn) speak(reply);</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>} catch(e) {</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>t.remove();</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>const fallback='What has been on your mind from your practice lately — anything that has stayed with you, or that you find yourself returning to?';</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>addMsg('a',fallback);</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>if(audioOn) speak(fallback);</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>busy(false);</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">async function send() {</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>const inp=document.getElementById('ui');</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>const text=inp.value.trim();</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>if(!text) return;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>stopSpeech();</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>const w=document.getElementById('welcome'); if(w)w.remove();</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>addMsg('u',text); inp.value=''; ar(inp); busy(true);</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>msgs.push({role:'user',content:text});</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>const t=showTyping();</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>try {</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>const full=await callAPI(SYS,msgs,900);</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>const parts=full.split('|||ANNOTATION|||');</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>const reply=parts[0].trim();</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>let ann=null;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>if(parts[1]){try{ann=JSON.parse(parts[1].trim());}catch(e){}}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>msgs.push({role:'assistant',content:full});</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>if(ann){ann.turn=turnCount;anns.push(ann);setMode(ann.mode);}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>turnCount++;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>t.remove();</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>const msgEl=addMsg('a',reply,ann);</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>if(audioOn) speakMsg(reply, msgEl);</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>if(turnCount&gt;=2) document.getElementById('expbtn').disabled=false;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>} catch(e) {</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>t.remove();</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>const el=document.createElement('div');</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>el.className='aerr'; el.textContent=e.message||String(e);</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>document.getElementById('conv').appendChild(el);</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>document.getElementById('conv').scrollTop=9999;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>busy(false);</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">// ── Off-ramp ─────────────────────────────────────────────────────────────</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">function showOffRamp() {</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>stopSpeech();</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>const elevated=anns.some(a=&gt;a.boundary_proximity);</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>const introEl=document.getElementById('offramp-intro');</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>if(elevated){</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>introEl.textContent="Sometimes conversations like this one open things that deserve more time and space. Please don't carry it alone.";</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>document.querySelectorAll('#support-block .support-item').forEach((el,i)=&gt;{if(i&gt;0)el.classList.add('elevated');});</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>} else {</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>introEl.textContent='What came up today may be worth taking further.';</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>document.getElementById('offramp-ov').classList.add('open');</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">// ── Attunement ───────────────────────────────────────────────────────────</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">async function showAttunement() {</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>document.getElementById('offramp-ov').classList.remove('open');</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>document.getElementById('attunement-ov').classList.add('open');</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>// Show play buttons if audio available</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>if('speechSynthesis' in window) {</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>document.getElementById('at-q1-play-row').style.display='block';</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>document.getElementById('at-q2-play-row').style.display='block';</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>// Generate personalised prompts</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>try {</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>const transcript=msgs</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>.filter(m=&gt;!m.content.includes('[Session start'))</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>.map(m=&gt;(m.role==='user'?'Practitioner: ':'Facilitator: ')+m.content.split('|||ANNOTATION|||')[0].trim())</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>.slice(-12).join('\n\n');</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>const lastAnn=anns.length?anns[anns.length-1]:{};</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>const domAnchor=['self','system','relational','technical']</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>.reduce((a,b)=&gt;anns.filter(x=&gt;x.dominant_anchor===a).length&gt;=anns.filter(x=&gt;x.dominant_anchor===b).length?a:b,'self');</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>const annSummary=`Mode at close:${lastAnn.mode||'unknown'}\nFailure mode:${anns.filter(a=&gt;a.failure_mode&amp;&amp;a.failure_mode!=='none').map(a=&gt;a.failure_mode).slice(-1)[0]||'none'}\nBoundary proximity:${anns.some(a=&gt;a.boundary_proximity)}\nSafety at close:${lastAnn.safety_estimate||'unknown'}\nDominant anchor:${domAnchor}`;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>const result=await callAPI(PROMPT_GEN_SYS,[{role:'user',content:`RECENT TRANSCRIPT:\n${transcript}\n\nSESSION DATA:\n${annSummary}\n\nGenerate the two personalised closing prompts now.`}],250);</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>let prompts=null;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>try{prompts=JSON.parse(result.trim());}catch(e){const m=result.match(/\{[\s\S]*?\}/);if(m)try{prompts=JSON.parse(m[0]);}catch(e2){}}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>if(prompts&amp;&amp;prompts.q1){</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>document.getElementById('at-q1-label').textContent=prompts.q1;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>if(prompts.q2) document.getElementById('at-q2-label').textContent=prompts.q2;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>} catch(e){ console.warn('Prompt gen failed:',e.message); }</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>// Auto-play if audio on</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>if(audioOn){</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>setTimeout(()=&gt;{</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>const q1=document.getElementById('at-q1-label').textContent;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>speak(q1);</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>},600);</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>setTimeout(()=&gt;document.getElementById('at-q1').focus(),300);</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">function playAttunementQ(n) {</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>const text=document.getElementById(`at-q${n}-label`).textContent;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>speak(text);</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">function submitAttunement() {</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>attunementQ1=document.getElementById('at-q1').value.trim();</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>attunementQ2=document.getElementById('at-q2').value.trim();</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>stopSpeech();</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>document.getElementById('attunement-ov').classList.remove('open');</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>openExport();</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">// ── Export ───────────────────────────────────────────────────────────────</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">async function openExport() {</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>document.getElementById('ep-ov').classList.add('open');</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>document.getElementById('epc').innerHTML='&lt;div style="text-align:center;padding:40px;color:var(--ink-soft)"&gt;Generating your summary…&lt;/div&gt;';</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>const transcript=msgs</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>.filter(m=&gt;!m.content.includes('[Session start'))</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>.map(m=&gt;(m.role==='user'?'Practitioner: ':'Facilitator: ')+m.content.split('|||ANNOTATION|||')[0].trim())</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>.join('\n\n');</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>const cc=anns.filter(a=&gt;a.mode==='compass').length;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>const pc=anns.filter(a=&gt;a.mode==='prism').length;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>const ac={self:0,system:0,relational:0,technical:0};</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>anns.forEach(a=&gt;{if(ac[a.dominant_anchor]!==undefined)ac[a.dominant_anchor]++;(a.secondary_anchors||[]).forEach(s=&gt;{if(ac[s]!==undefined)ac[s]+=.5;});});</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>const annData=`Turns:${anns.length} Compass:${cc} Prism:${pc}\nAnchors:Self=${ac.self} System=${ac.system} Relational=${ac.relational} Technical=${ac.technical}\nSafety arc:${anns.map(a=&gt;a.safety_estimate).join('→')}\nBoundary flags:${anns.filter(a=&gt;a.boundary_proximity).length}\nField signals:${anns.map((a,i)=&gt;`T${i+1}:${a.field_signal}`).join(' | ')}\nFacilitator notes:${anns.map((a,i)=&gt;`T${i+1}:${a.facilitator_note}`).join(' | ')}\nSitting with:${attunementQ1||'not provided'}\nCarrying forward:${attunementQ2||'not provided'}`;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>try {</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>const summary=await callAPI(EXPORT_SYS,[{role:'user',content:`TRANSCRIPT:\n${transcript}\n\nSESSION DATA:\n${annData}\n\nGenerate the portfolio summary now.`}],900);</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>const mx=Math.max(...Object.values(ac),1);</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>const total=Math.max(anns.length,1);</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>const paras=summary.trim().split(/\n\n+/).filter(p=&gt;p.trim());</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>document.getElementById('epc').innerHTML=`</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="es"&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span>&lt;h3&gt;Engagement shape&lt;/h3&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="msumm"&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="mcard co"&gt;&lt;div class="mn"&gt;Orientation&lt;/div&gt;&lt;div class="mc"&gt;${cc}&lt;/div&gt;&lt;div class="ml"&gt;turn${cc!==1?'s':''} grounding&lt;/div&gt;&lt;/div&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="mcard pr"&gt;&lt;div class="mn"&gt;Exploration&lt;/div&gt;&lt;div class="mc"&gt;${pc}&lt;/div&gt;&lt;div class="ml"&gt;turn${pc!==1?'s':''} wider enquiry&lt;/div&gt;&lt;/div&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="abars"&gt;${Object.entries(ac).map(([a,c])=&gt;`&lt;div class="arow"&gt;&lt;div class="aname"&gt;${a[0].toUpperCase()+a.slice(1)}&lt;/div&gt;&lt;div class="abg"&gt;&lt;div class="afill ${a}" style="width:${Math.round((c/mx)*100)}%"&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="apct"&gt;${Math.round((c/total)*100)}%&lt;/div&gt;&lt;/div&gt;`).join('')}&lt;/div&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="es"&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span>&lt;h3&gt;Reflective engagement summary&lt;/h3&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="eblock"&gt;${paras.map(p=&gt;`&lt;p&gt;${p.trim()}&lt;/p&gt;`).join('')}&lt;/div&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>${attunementQ1||attunementQ2?`&lt;div class="es"&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span>&lt;h3&gt;In your own words&lt;/h3&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span>${attunementQ1?`&lt;div style="margin-bottom:${attunementQ2?'14px':'0'}"&gt;&lt;div class="at-export-label"&gt;Sitting with&lt;/div&gt;&lt;div class="eblock" style="font-style:italic;border-left:3px solid var(--al)"&gt;\u201c${attunementQ1}\u201d&lt;/div&gt;&lt;/div&gt;`:''}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span>${attunementQ2?`&lt;div&gt;&lt;div class="at-export-label"&gt;Carrying forward&lt;/div&gt;&lt;div class="eblock" style="font-style:italic;border-left:3px solid var(--accent)"&gt;\u201c${attunementQ2}\u201d&lt;/div&gt;&lt;/div&gt;`:''}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;`:''}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="disc"&gt;This summary describes the form of your reflective engagement. It is not an assessment of your reflective capacity and does not generate insight on your behalf. The meaning of what you explored remains yours to make.&lt;/div&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="cbtn" onclick="copyExport()"&gt;⎘ Copy for portfolio&lt;/button&gt;`;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>} catch(e) {</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>document.getElementById('epc').innerHTML=`&lt;div class="aerr"&gt;${e.message}&lt;/div&gt;`;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">function copyExport() {</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>const main=document.querySelector('#epc .eblock')?.innerText||'';</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>const parts=[main];</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>if(attunementQ1) parts.push('Sitting with:\n'+attunementQ1);</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>if(attunementQ2) parts.push('Carrying forward:\n'+attunementQ2);</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>navigator.clipboard.writeText(parts.filter(Boolean).join('\n\n')).then(()=&gt;{</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>const b=document.querySelector('.cbtn');</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>b.textContent='✓ Copied'; setTimeout(()=&gt;{b.innerHTML='⎘ Copy for portfolio';},2000);</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>});</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">function closeExport(){document.getElementById('ep-ov').classList.remove('open');}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">function epBgClose(e){if(e.target===document.getElementById('ep-ov'))closeExport();}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">// ── Audio — speech synthesis ──────────────────────────────────────────────</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">function toggleAudio() {</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>audioOn=!audioOn;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>document.getElementById('audio-toggle').classList.toggle('on',audioOn);</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>if(!audioOn) stopSpeech();</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">function speak(text) {</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>if(!('speechSynthesis' in window)) return;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>stopSpeech();</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>const u=new SpeechSynthesisUtterance(text);</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>u.rate=0.92; u.pitch=1.0; u.volume=1.0;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>// Prefer a natural-sounding voice</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>const voices=speechSynthesis.getVoices();</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>const preferred=voices.find(v=&gt;v.lang.startsWith('en')&amp;&amp;(v.name.includes('Samantha')||v.name.includes('Karen')||v.name.includes('Daniel')||v.name.includes('Google UK')||v.name.includes('Natural')));</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>if(preferred) u.voice=preferred;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>currentUtterance=u;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>speechSynthesis.speak(u);</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">function speakMsg(text, msgEl) {</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>speak(text);</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>if(msgEl){</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>const btn=msgEl.querySelector('.msg-play');</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>if(btn){</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>btn.classList.add('playing');</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>if(currentUtterance) currentUtterance.onend=()=&gt;{btn.classList.remove('playing');currentUtterance=null;};</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">function stopSpeech() {</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>if('speechSynthesis' in window) speechSynthesis.cancel();</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>currentUtterance=null;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>document.querySelectorAll('.msg-play.playing').forEach(b=&gt;b.classList.remove('playing'));</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">function playMsg(btn, text) {</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>if(btn.classList.contains('playing')){stopSpeech();return;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>stopSpeech();</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>speak(text);</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>btn.classList.add('playing');</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>if(currentUtterance) currentUtterance.onend=()=&gt;{btn.classList.remove('playing');currentUtterance=null;};</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">// ── Audio — speech recognition ────────────────────────────────────────────</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">function toggleMic() {</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>if(!('webkitSpeechRecognition' in window||'SpeechRecognition' in window)){</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>alert('Speech recognition is not available in this browser. Try Chrome or Safari.');</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>return;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>if(isListening){stopMic();return;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>const SR=window.SpeechRecognition||window.webkitSpeechRecognition;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>recognition=new SR();</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>recognition.continuous=false;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>recognition.interimResults=true;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>recognition.lang='en-GB';</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>const micBtn=document.getElementById('mic-btn');</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>const inp=document.getElementById('ui');</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>recognition.onstart=()=&gt;{isListening=true;micBtn.classList.add('listening');micBtn.textContent='⏹';};</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>recognition.onresult=(e)=&gt;{</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>let interim='',final='';</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>for(let i=e.resultIndex;i&lt;e.results.length;i++){</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>if(e.results[i].isFinal) final+=e.results[i][0].transcript;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>else interim+=e.results[i][0].transcript;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>inp.value=(inp.value+final+interim).trim();</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>ar(inp);</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>};</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>recognition.onend=()=&gt;{isListening=false;micBtn.classList.remove('listening');micBtn.textContent='🎤';};</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>recognition.onerror=(e)=&gt;{isListening=false;micBtn.classList.remove('listening');micBtn.textContent='🎤';};</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>recognition.start();</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">function stopMic(){if(recognition){recognition.stop();recognition=null;}isListening=false;}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">// ── UI helpers ────────────────────────────────────────────────────────────</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">function addMsg(role,text,ann){</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>const conv=document.getElementById('conv');</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>const el=document.createElement('div'); el.className='msg '+role;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>const bub=document.createElement('div'); bub.className='bub'; bub.textContent=text;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>el.appendChild(bub);</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>if(role==='a'){</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>const actions=document.createElement('div'); actions.className='msg-actions';</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>const playBtn=document.createElement('button'); playBtn.className='msg-play';</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>playBtn.textContent='▶'; playBtn.title='Listen';</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>playBtn.onclick=()=&gt;playMsg(playBtn,text);</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>actions.appendChild(playBtn);</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>if(ann&amp;&amp;ann.dominant_anchor&amp;&amp;ann.dominant_anchor!=='none'){</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>const chips=[ann.dominant_anchor,...(ann.secondary_anchors||[])].slice(0,2);</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>[...new Set(chips)].forEach(a=&gt;{const c=document.createElement('span');c.className='ac '+a;c.textContent=a;actions.appendChild(c);});</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>if(ann.failure_mode&amp;&amp;ann.failure_mode!=='none'){const c=document.createElement('span');c.className='ac '+ann.failure_mode;c.textContent=ann.failure_mode.replace(/_/g,' ');actions.appendChild(c);}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>el.appendChild(actions);</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>conv.appendChild(el);</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>conv.scrollTop=conv.scrollHeight;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>return el;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">function showTyping(){</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>const conv=document.getElementById('conv');</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>const el=document.createElement('div'); el.className='msg a';</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>el.innerHTML='&lt;div class="typing"&gt;&lt;div class="dot"&gt;&lt;/div&gt;&lt;div class="dot"&gt;&lt;/div&gt;&lt;div class="dot"&gt;&lt;/div&gt;&lt;/div&gt;';</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>conv.appendChild(el); conv.scrollTop=conv.scrollHeight; return el;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">function setMode(mode){</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>const p=document.getElementById('mpill');</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>if(mode==='compass'){p.textContent='Orienting';p.className='mpill c';}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>else if(mode==='prism'){p.textContent='Exploring';p.className='mpill p';}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>else{p.textContent='—';p.className='mpill n';}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">function busy(on){</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>document.getElementById('sbtn').disabled=on;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>document.getElementById('ui').disabled=on;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">function handleKey(e){if(e.key==='Enter'&amp;&amp;!e.shiftKey){e.preventDefault();send();}}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">function ar(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,120)+'px';}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">// ── Mobile fixes ─────────────────────────────────────────────────────────</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">function setVh(){document.documentElement.style.setProperty('--vh',window.innerHeight*.01+'px');}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">setVh();</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">window.addEventListener('resize',setVh);</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">window.addEventListener('orientationchange',()=&gt;setTimeout(setVh,100));</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">const uiEl=document.getElementById('ui');</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">if(uiEl){uiEl.addEventListener('focus',()=&gt;{setTimeout(()=&gt;{const c=document.getElementById('conv');if(c)c.scrollTop=c.scrollHeight;},400);});}</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">// ── Init ─────────────────────────────────────────────────────────────────</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">window.addEventListener('load',()=&gt;{</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>// Load voices async for iOS</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>if('speechSynthesis' in window) speechSynthesis.getVoices();</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>speechSynthesis &amp;&amp; window.speechSynthesis.addEventListener &amp;&amp; window.speechSynthesis.addEventListener('voiceschanged',()=&gt;{});</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">  </span>checkAccess();</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1">});</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p4"><span class="s5">&lt;/</span><span class="s1">script</span><span class="s5">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p4"><span class="s5">&lt;/</span><span class="s1">body</span><span class="s5">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p4"><span class="s5">&lt;/</span><span class="s1">html</span><span class="s5">&gt;</span></p>
-<p class="p2"><span class="s2"></span><br></p>
-<p class="p3"><span class="s1"> </span></p>
+
+<!-- Access screen -->
+<div id="access-screen">
+  <div class="access-card">
+    <div class="access-logo">Catalyst<span>.</span></div>
+    <div class="access-tag">A reflective practice tool for GPs and GP trainees. A space to think — without agenda, without assessment.</div>
+    <label for="code-input">Access code</label>
+    <input type="password" id="code-input" placeholder="······" autocomplete="off" onkeydown="if(event.key==='Enter')checkCode()">
+    <div class="access-err" id="access-err">That code isn't right — check with the person who sent you the link.</div>
+    <button class="access-btn" onclick="checkCode()">Enter →</button>
+    <div class="access-note">Your reflections stay in your browser. Nothing is stored or shared.</div>
+  </div>
+</div>
+
+<!-- Main app -->
+<div id="app">
+  <div class="hdr">
+    <div class="logo">Catalyst<span>.</span></div>
+    <div class="hdr-r">
+      <div class="mpill n" id="mpill">—</div>
+      <button class="icon-btn" id="audio-toggle" onclick="toggleAudio()" title="Toggle audio">♪</button>
+      <button class="ebtn" id="expbtn" disabled onclick="showOffRamp()">Summary</button>
+    </div>
+  </div>
+  <div class="conv" id="conv">
+    <div class="welcome" id="welcome">
+      <div class="wmark">◎</div>
+      <h2>A space to think</h2>
+      <p>A reflective conversation. No right answers, no performance criteria — just a chance to think about your practice.</p>
+      <p style="margin-top:4px;font-size:13px;color:var(--ink-faint)">When you're ready, share what's on your mind.</p>
+    </div>
+  </div>
+  <div class="inp-area">
+    <div class="inp-row">
+      <button class="mic-btn" id="mic-btn" onclick="toggleMic()" title="Speak">🎤</button>
+      <textarea id="ui" placeholder="Share what's on your mind..." rows="1"
+        onkeydown="handleKey(event)" oninput="ar(this)"></textarea>
+      <button class="sbtn" id="sbtn" onclick="send()">↑</button>
+    </div>
+    <div class="rnote">Your reflections stay in your browser only.</div>
+  </div>
+</div>
+
+<!-- Off-ramp overlay -->
+<div class="ov" id="offramp-ov">
+  <div class="op">
+    <div class="sheet-handle"></div>
+    <div class="op-title">Before you go</div>
+    <div class="op-sub" id="offramp-intro">What came up today may be worth taking further.</div>
+    <div class="support-block" id="support-block">
+      <div class="support-item primary">
+        <div class="support-label">Supervision</div>
+        <div class="support-text">Your educational supervisor is a good first place to take this. The summary can help start that conversation.</div>
+      </div>
+      <div class="support-item">
+        <div class="support-label">Pastoral support</div>
+        <div class="support-text">
+          <strong>BMA Doctors for Doctors</strong> — 0330 123 1245<br>
+          <strong>NHS Practitioner Health</strong> — <a href="https://www.practitionerhealth.nhs.uk" target="_blank">practitionerhealth.nhs.uk</a>
+        </div>
+      </div>
+      <div class="support-item">
+        <div class="support-label">If you're in distress right now</div>
+        <div class="support-text"><strong>Samaritans</strong> — 116 123, any time</div>
+      </div>
+    </div>
+    <button class="cont-btn" onclick="showAttunement()">Continue to summary →</button>
+    <div style="margin-top:16px;text-align:center">
+      <a href="mailto:james.lyon892@mod.gov.uk?subject=Catalyst feedback" style="font-size:12px;color:var(--ink-faint);text-decoration:none;border-bottom:1px solid var(--pm);padding-bottom:1px;">Something felt wrong — let James know</a>
+    </div>
+  </div>
+</div>
+
+<!-- Attunement overlay -->
+<div class="ov" id="attunement-ov">
+  <div class="op" style="max-width:560px">
+    <div class="sheet-handle"></div>
+    <div class="op-title">One more moment</div>
+    <div class="op-sub">Before your summary. There are no right answers here — this is yours.</div>
+
+    <div id="at-q1-play-row" style="display:none;margin-bottom:4px">
+      <button class="at-play-btn" onclick="playAttunementQ(1)">▶ Hear the question</button>
+    </div>
+    <div class="at-q-label" id="at-q1-label">What are you sitting with from this conversation?</div>
+    <textarea class="at-textarea" id="at-q1" placeholder="You can be as brief or as open as feels right..."></textarea>
+
+    <div id="at-q2-play-row" style="display:none;margin-bottom:4px">
+      <button class="at-play-btn" onclick="playAttunementQ(2)">▶ Hear the question</button>
+    </div>
+    <div class="at-q-label" id="at-q2-label">Is there anything you want to carry differently into practice?</div>
+    <div class="at-q-hint">Optional — leave blank if you're not sure yet.</div>
+    <textarea class="at-textarea" id="at-q2" placeholder=""></textarea>
+
+    <div style="display:flex;gap:10px;align-items:center">
+      <button class="cont-btn" style="flex:1" onclick="submitAttunement()">Generate my summary →</button>
+      <button class="at-skip" onclick="submitAttunement()">Skip</button>
+    </div>
+    <div style="margin-top:12px;font-size:11px;color:var(--ink-faint);text-align:center">Your words appear in your summary exactly as you write them.</div>
+  </div>
+</div>
+
+<!-- Export overlay -->
+<div class="ep-ov" id="ep-ov" onclick="epBgClose(event)">
+  <div class="ep">
+    <div class="sheet-handle"></div>
+    <div class="ep-hdr">
+      <div>
+        <div class="ep-title">Session summary</div>
+        <div class="ep-sub">A trace of your reflective engagement</div>
+      </div>
+      <button class="xbtn" onclick="closeExport()">×</button>
+    </div>
+    <div id="epc"><div style="text-align:center;padding:40px;color:var(--ink-soft)">Generating…</div></div>
+  </div>
+</div>
+
+<script>
+// ── Config ───────────────────────────────────────────────────────────────
+const WORKER_URL = 'https://catalyst-proxy.jdlyon80.workers.dev';
+const ACCESS_CODE = '462387';
+const LS_KEY = 'catalyst_access';
+
+// ── System prompts ───────────────────────────────────────────────────────
+const SYS = `Your north star is: be curious, not judgemental. In every mode, at every level of disclosure, your orientation is genuine curiosity about the practitioner's experience — never assessment, never challenge, never resolution on their behalf.
+
+WHO YOU ARE
+You are a reflective practice facilitator working within the Catalytic Reflection Framework (CRF). You hold a genuine, non-directive reflective conversation with a GP or GP trainee. Simultaneously you maintain a silent structured annotation of the reflective field. The annotation is never visible to the practitioner.
+
+THE ARCHITECTURE
+Integrative meaning making requires three conditions simultaneously:
+Emotion — affective signal. What is actually felt, not managed. Infer from: affect named and located, disclosed discomfort, surprise at own response, embodied description.
+Cognition — disciplined interpretation. Capacity to think about experience without being overwhelmed. Infer from: coherence, sequencing, holding complexity.
+Field — relational contact and containment. Sense of being situated in relational/systemic context. Infer from: references to others, awareness of context, relational texture.
+Psychological safety governs emotion. Cognitive capacity governs cognition. Relational contact governs field.
+
+THREE FAILURE MODES
+OVERWHELM — emotion dominant, cognition absent. Signs: venting, fragmentation, escalating affect, recursive complaint. Facilitation: contain and ground, gently invite cognition back. "What do you make of that?" Stabilise first.
+AFFECT BLOCKED — cognition dominant, emotion absent. Signs: role language, competency framing, portfolio-ready language, affect named only to confirm management, social smoothing when challenged. Facilitation: persistent tireless curiosity. Small specific embodied questions. Never name or challenge the pattern.
+LOSS OF RELATIONAL CONTACT — emotion and cognition present, field absent. Signs: rumination, isolation, premature closure, projection. Facilitation: gently reintroduce relational texture. "What was it like to be with that person?"
+
+TWO MODES
+COMPASS — aperture narrowed. Task: orientation and stabilisation only. Do not press for insight.
+PRISM — all three vertices active. Task: deepen gently, hold tension, allow meaning to emerge at practitioner's pace. Never close prematurely.
+TRANSITIONAL — field shifting. Hold. Ask nothing or something very small.
+
+FACILITATION RULES
+1. Never use framework language with the practitioner.
+2. 1-3 sentences per response. Brevity holds space.
+3. Curiosity is not always a question. "That sounds like a lot." "I'm sitting with that." These are facilitation.
+4. When practitioner signals nothing more to give: leave the door ajar. "You have. I'm just sitting with that."
+5. Never close reflection prematurely or summarise for them.
+6. Attend to what is absent as much as what is present.
+7. Know the boundary. When material becomes formative, shift from deepening to containing.
+8. Accept the session at the level it is being offered.
+
+ANNOTATION — after every user turn, reply then |||ANNOTATION|||
+[1-3 sentence reply]
+|||ANNOTATION|||
+{"mode":"compass|prism|transitional|unclear","failure_mode":"overwhelm|affect_blocked|loss_of_relational_contact|none","absent_vertex":"emotion|cognition|field|none","dominant_anchor":"self|system|relational|technical|none","secondary_anchors":[],"safety_estimate":"low|moderate|high|defended","capacity_estimate":"low|moderate|high","relational_contact":"low|moderate|high","polar_shift_risk":false,"polar_shift_note":null,"boundary_proximity":false,"field_signal":"one sentence","facilitator_note":"one sentence"}`;
+
+const EXPORT_SYS = `Generate a portfolio-appropriate reflective summary from a GP supervision session.
+PRINCIPLES: Trace of reflection not substitute. Do NOT generate insight. Do NOT evaluate. Second person. 3-4 paragraphs. Professional and warm.
+Translate: Compass→orientation/grounding, Prism→wider exploratory engagement, failure modes→plain descriptive language. Never use CRF terms.
+STRUCTURE: Para 1: territory brought. Para 2: form of engagement not content. Para 3: movement or shift. Para 4 optional: invitation to supervision.
+Write as trusted educational supervisor: honest, specific, non-evaluative. Practitioner authors their own meaning.`;
+
+const PROMPT_GEN_SYS = `Generate two short personalised closing prompts for a reflective practice session with a GP.
+Mirror the register, vocabulary and cognitive style of the practitioner's language exactly.
+First prompt: what are they sitting with — allows unresolved, no presupposed insight.
+Second prompt: what do they want to carry differently — dispositional not behavioural, genuinely optional in framing.
+If boundary_proximity: warmer, gentler, shorter. If affect_blocked: first prompt invites person not role. If compass throughout: simpler, no assumption of depth. If prism reached: more open.
+Never use clinical/academic language unless practitioner used it. Never presuppose insight.
+Respond ONLY with valid JSON: {"q1":"[prompt]","q2":"[prompt — framed optional]"}`;
+
+// ── State ────────────────────────────────────────────────────────────────
+let msgs=[], anns=[], turnCount=0, attunementQ1='', attunementQ2='';
+let audioOn=false, currentUtterance=null, recognition=null, isListening=false;
+
+// ── Access ───────────────────────────────────────────────────────────────
+function checkCode() {
+  const val = document.getElementById('code-input').value.trim();
+  const err = document.getElementById('access-err');
+  if (val === ACCESS_CODE) {
+    localStorage.setItem(LS_KEY, '1');
+    document.getElementById('access-screen').style.display='none';
+    document.getElementById('app').style.display='flex';
+    setTimeout(openingTurn, 400);
+  } else {
+    err.style.display='block';
+    document.getElementById('code-input').value='';
+  }
+}
+
+function checkAccess() {
+  if (localStorage.getItem(LS_KEY) === '1') {
+    document.getElementById('access-screen').style.display='none';
+    document.getElementById('app').style.display='flex';
+    setTimeout(openingTurn, 400);
+  }
+}
+
+// ── API ──────────────────────────────────────────────────────────────────
+async function callAPI(system, messages, maxTokens) {
+  let res, data;
+  try {
+    res = await fetch(WORKER_URL, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:maxTokens,system,messages})
+    });
+  } catch(e) { throw new Error('Network error — check your connection'); }
+  try { data = await res.json(); } catch(e) { throw new Error('Unexpected server response ('+res.status+')'); }
+  if (!res.ok) throw new Error('API '+res.status+': '+(data?.error?.message||'unknown error'));
+  if (!data.content||!Array.isArray(data.content)) throw new Error('Unexpected response structure');
+  return data.content.map(b=>b.text||'').join('');
+}
+
+// ── Conversation ─────────────────────────────────────────────────────────
+async function openingTurn() {
+  const t=showTyping(); busy(true);
+  try {
+    const full=await callAPI(SYS,[{role:'user',content:'[Session start — generate a warm, open, field-sensitive opening question for a GP or GP trainee. 1-2 sentences only. No CRF language. Do not lead with any particular anchor.]'}],150);
+    const reply=full.split('|||ANNOTATION|||')[0].trim();
+    t.remove(); addMsg('a',reply);
+    if(audioOn) speak(reply);
+  } catch(e) {
+    t.remove();
+    const fallback='What has been on your mind from your practice lately — anything that has stayed with you, or that you find yourself returning to?';
+    addMsg('a',fallback);
+    if(audioOn) speak(fallback);
+  }
+  busy(false);
+}
+
+async function send() {
+  const inp=document.getElementById('ui');
+  const text=inp.value.trim();
+  if(!text) return;
+  stopSpeech();
+  const w=document.getElementById('welcome'); if(w)w.remove();
+  addMsg('u',text); inp.value=''; ar(inp); busy(true);
+  msgs.push({role:'user',content:text});
+  const t=showTyping();
+  try {
+    const full=await callAPI(SYS,msgs,900);
+    const parts=full.split('|||ANNOTATION|||');
+    const reply=parts[0].trim();
+    let ann=null;
+    if(parts[1]){try{ann=JSON.parse(parts[1].trim());}catch(e){}}
+    msgs.push({role:'assistant',content:full});
+    if(ann){ann.turn=turnCount;anns.push(ann);setMode(ann.mode);}
+    turnCount++;
+    t.remove();
+    const msgEl=addMsg('a',reply,ann);
+    if(audioOn) speakMsg(reply, msgEl);
+    if(turnCount>=2) document.getElementById('expbtn').disabled=false;
+  } catch(e) {
+    t.remove();
+    const el=document.createElement('div');
+    el.className='aerr'; el.textContent=e.message||String(e);
+    document.getElementById('conv').appendChild(el);
+    document.getElementById('conv').scrollTop=9999;
+  }
+  busy(false);
+}
+
+// ── Off-ramp ─────────────────────────────────────────────────────────────
+function showOffRamp() {
+  stopSpeech();
+  const elevated=anns.some(a=>a.boundary_proximity);
+  const introEl=document.getElementById('offramp-intro');
+  if(elevated){
+    introEl.textContent="Sometimes conversations like this one open things that deserve more time and space. Please don't carry it alone.";
+    document.querySelectorAll('#support-block .support-item').forEach((el,i)=>{if(i>0)el.classList.add('elevated');});
+  } else {
+    introEl.textContent='What came up today may be worth taking further.';
+  }
+  document.getElementById('offramp-ov').classList.add('open');
+}
+
+// ── Attunement ───────────────────────────────────────────────────────────
+async function showAttunement() {
+  document.getElementById('offramp-ov').classList.remove('open');
+  document.getElementById('attunement-ov').classList.add('open');
+
+  // Show play buttons if audio available
+  if('speechSynthesis' in window) {
+    document.getElementById('at-q1-play-row').style.display='block';
+    document.getElementById('at-q2-play-row').style.display='block';
+  }
+
+  // Generate personalised prompts
+  try {
+    const transcript=msgs
+      .filter(m=>!m.content.includes('[Session start'))
+      .map(m=>(m.role==='user'?'Practitioner: ':'Facilitator: ')+m.content.split('|||ANNOTATION|||')[0].trim())
+      .slice(-12).join('\n\n');
+    const lastAnn=anns.length?anns[anns.length-1]:{};
+    const domAnchor=['self','system','relational','technical']
+      .reduce((a,b)=>anns.filter(x=>x.dominant_anchor===a).length>=anns.filter(x=>x.dominant_anchor===b).length?a:b,'self');
+    const annSummary=`Mode at close:${lastAnn.mode||'unknown'}\nFailure mode:${anns.filter(a=>a.failure_mode&&a.failure_mode!=='none').map(a=>a.failure_mode).slice(-1)[0]||'none'}\nBoundary proximity:${anns.some(a=>a.boundary_proximity)}\nSafety at close:${lastAnn.safety_estimate||'unknown'}\nDominant anchor:${domAnchor}`;
+    const result=await callAPI(PROMPT_GEN_SYS,[{role:'user',content:`RECENT TRANSCRIPT:\n${transcript}\n\nSESSION DATA:\n${annSummary}\n\nGenerate the two personalised closing prompts now.`}],250);
+    let prompts=null;
+    try{prompts=JSON.parse(result.trim());}catch(e){const m=result.match(/\{[\s\S]*?\}/);if(m)try{prompts=JSON.parse(m[0]);}catch(e2){}}
+    if(prompts&&prompts.q1){
+      document.getElementById('at-q1-label').textContent=prompts.q1;
+      if(prompts.q2) document.getElementById('at-q2-label').textContent=prompts.q2;
+    }
+  } catch(e){ console.warn('Prompt gen failed:',e.message); }
+
+  // Auto-play if audio on
+  if(audioOn){
+    setTimeout(()=>{
+      const q1=document.getElementById('at-q1-label').textContent;
+      speak(q1);
+    },600);
+  }
+  setTimeout(()=>document.getElementById('at-q1').focus(),300);
+}
+
+function playAttunementQ(n) {
+  const text=document.getElementById(`at-q${n}-label`).textContent;
+  speak(text);
+}
+
+function submitAttunement() {
+  attunementQ1=document.getElementById('at-q1').value.trim();
+  attunementQ2=document.getElementById('at-q2').value.trim();
+  stopSpeech();
+  document.getElementById('attunement-ov').classList.remove('open');
+  openExport();
+}
+
+// ── Export ───────────────────────────────────────────────────────────────
+async function openExport() {
+  document.getElementById('ep-ov').classList.add('open');
+  document.getElementById('epc').innerHTML='<div style="text-align:center;padding:40px;color:var(--ink-soft)">Generating your summary…</div>';
+  const transcript=msgs
+    .filter(m=>!m.content.includes('[Session start'))
+    .map(m=>(m.role==='user'?'Practitioner: ':'Facilitator: ')+m.content.split('|||ANNOTATION|||')[0].trim())
+    .join('\n\n');
+  const cc=anns.filter(a=>a.mode==='compass').length;
+  const pc=anns.filter(a=>a.mode==='prism').length;
+  const ac={self:0,system:0,relational:0,technical:0};
+  anns.forEach(a=>{if(ac[a.dominant_anchor]!==undefined)ac[a.dominant_anchor]++;(a.secondary_anchors||[]).forEach(s=>{if(ac[s]!==undefined)ac[s]+=.5;});});
+  const annData=`Turns:${anns.length} Compass:${cc} Prism:${pc}\nAnchors:Self=${ac.self} System=${ac.system} Relational=${ac.relational} Technical=${ac.technical}\nSafety arc:${anns.map(a=>a.safety_estimate).join('→')}\nBoundary flags:${anns.filter(a=>a.boundary_proximity).length}\nField signals:${anns.map((a,i)=>`T${i+1}:${a.field_signal}`).join(' | ')}\nFacilitator notes:${anns.map((a,i)=>`T${i+1}:${a.facilitator_note}`).join(' | ')}\nSitting with:${attunementQ1||'not provided'}\nCarrying forward:${attunementQ2||'not provided'}`;
+  try {
+    const summary=await callAPI(EXPORT_SYS,[{role:'user',content:`TRANSCRIPT:\n${transcript}\n\nSESSION DATA:\n${annData}\n\nGenerate the portfolio summary now.`}],900);
+    const mx=Math.max(...Object.values(ac),1);
+    const total=Math.max(anns.length,1);
+    const paras=summary.trim().split(/\n\n+/).filter(p=>p.trim());
+    document.getElementById('epc').innerHTML=`
+      <div class="es">
+        <h3>Engagement shape</h3>
+        <div class="msumm">
+          <div class="mcard co"><div class="mn">Orientation</div><div class="mc">${cc}</div><div class="ml">turn${cc!==1?'s':''} grounding</div></div>
+          <div class="mcard pr"><div class="mn">Exploration</div><div class="mc">${pc}</div><div class="ml">turn${pc!==1?'s':''} wider enquiry</div></div>
+        </div>
+        <div class="abars">${Object.entries(ac).map(([a,c])=>`<div class="arow"><div class="aname">${a[0].toUpperCase()+a.slice(1)}</div><div class="abg"><div class="afill ${a}" style="width:${Math.round((c/mx)*100)}%"></div></div><div class="apct">${Math.round((c/total)*100)}%</div></div>`).join('')}</div>
+      </div>
+      <div class="es">
+        <h3>Reflective engagement summary</h3>
+        <div class="eblock">${paras.map(p=>`<p>${p.trim()}</p>`).join('')}</div>
+      </div>
+      ${attunementQ1||attunementQ2?`<div class="es">
+        <h3>In your own words</h3>
+        ${attunementQ1?`<div style="margin-bottom:${attunementQ2?'14px':'0'}"><div class="at-export-label">Sitting with</div><div class="eblock" style="font-style:italic;border-left:3px solid var(--al)">\u201c${attunementQ1}\u201d</div></div>`:''}
+        ${attunementQ2?`<div><div class="at-export-label">Carrying forward</div><div class="eblock" style="font-style:italic;border-left:3px solid var(--accent)">\u201c${attunementQ2}\u201d</div></div>`:''}
+      </div>`:''}
+      <div class="disc">This summary describes the form of your reflective engagement. It is not an assessment of your reflective capacity and does not generate insight on your behalf. The meaning of what you explored remains yours to make.</div>
+      <button class="cbtn" onclick="copyExport()">⎘ Copy for portfolio</button>`;
+  } catch(e) {
+    document.getElementById('epc').innerHTML=`<div class="aerr">${e.message}</div>`;
+  }
+}
+
+function copyExport() {
+  const main=document.querySelector('#epc .eblock')?.innerText||'';
+  const parts=[main];
+  if(attunementQ1) parts.push('Sitting with:\n'+attunementQ1);
+  if(attunementQ2) parts.push('Carrying forward:\n'+attunementQ2);
+  navigator.clipboard.writeText(parts.filter(Boolean).join('\n\n')).then(()=>{
+    const b=document.querySelector('.cbtn');
+    b.textContent='✓ Copied'; setTimeout(()=>{b.innerHTML='⎘ Copy for portfolio';},2000);
+  });
+}
+function closeExport(){document.getElementById('ep-ov').classList.remove('open');}
+function epBgClose(e){if(e.target===document.getElementById('ep-ov'))closeExport();}
+
+// ── Audio — speech synthesis ──────────────────────────────────────────────
+function toggleAudio() {
+  audioOn=!audioOn;
+  document.getElementById('audio-toggle').classList.toggle('on',audioOn);
+  if(!audioOn) stopSpeech();
+}
+
+function speak(text) {
+  if(!('speechSynthesis' in window)) return;
+  stopSpeech();
+  const u=new SpeechSynthesisUtterance(text);
+  u.rate=0.92; u.pitch=1.0; u.volume=1.0;
+  // Prefer a natural-sounding voice
+  const voices=speechSynthesis.getVoices();
+  const preferred=voices.find(v=>v.lang.startsWith('en')&&(v.name.includes('Samantha')||v.name.includes('Karen')||v.name.includes('Daniel')||v.name.includes('Google UK')||v.name.includes('Natural')));
+  if(preferred) u.voice=preferred;
+  currentUtterance=u;
+  speechSynthesis.speak(u);
+}
+
+function speakMsg(text, msgEl) {
+  speak(text);
+  if(msgEl){
+    const btn=msgEl.querySelector('.msg-play');
+    if(btn){
+      btn.classList.add('playing');
+      if(currentUtterance) currentUtterance.onend=()=>{btn.classList.remove('playing');currentUtterance=null;};
+    }
+  }
+}
+
+function stopSpeech() {
+  if('speechSynthesis' in window) speechSynthesis.cancel();
+  currentUtterance=null;
+  document.querySelectorAll('.msg-play.playing').forEach(b=>b.classList.remove('playing'));
+}
+
+function playMsg(btn, text) {
+  if(btn.classList.contains('playing')){stopSpeech();return;}
+  stopSpeech();
+  speak(text);
+  btn.classList.add('playing');
+  if(currentUtterance) currentUtterance.onend=()=>{btn.classList.remove('playing');currentUtterance=null;};
+}
+
+// ── Audio — speech recognition ────────────────────────────────────────────
+function toggleMic() {
+  if(!('webkitSpeechRecognition' in window||'SpeechRecognition' in window)){
+    alert('Speech recognition is not available in this browser. Try Chrome or Safari.');
+    return;
+  }
+  if(isListening){stopMic();return;}
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  recognition=new SR();
+  recognition.continuous=false;
+  recognition.interimResults=true;
+  recognition.lang='en-GB';
+  const micBtn=document.getElementById('mic-btn');
+  const inp=document.getElementById('ui');
+  recognition.onstart=()=>{isListening=true;micBtn.classList.add('listening');micBtn.textContent='⏹';};
+  recognition.onresult=(e)=>{
+    let interim='',final='';
+    for(let i=e.resultIndex;i<e.results.length;i++){
+      if(e.results[i].isFinal) final+=e.results[i][0].transcript;
+      else interim+=e.results[i][0].transcript;
+    }
+    inp.value=(inp.value+final+interim).trim();
+    ar(inp);
+  };
+  recognition.onend=()=>{isListening=false;micBtn.classList.remove('listening');micBtn.textContent='🎤';};
+  recognition.onerror=(e)=>{isListening=false;micBtn.classList.remove('listening');micBtn.textContent='🎤';};
+  recognition.start();
+}
+
+function stopMic(){if(recognition){recognition.stop();recognition=null;}isListening=false;}
+
+// ── UI helpers ────────────────────────────────────────────────────────────
+function addMsg(role,text,ann){
+  const conv=document.getElementById('conv');
+  const el=document.createElement('div'); el.className='msg '+role;
+  const bub=document.createElement('div'); bub.className='bub'; bub.textContent=text;
+  el.appendChild(bub);
+  if(role==='a'){
+    const actions=document.createElement('div'); actions.className='msg-actions';
+    const playBtn=document.createElement('button'); playBtn.className='msg-play';
+    playBtn.textContent='▶'; playBtn.title='Listen';
+    playBtn.onclick=()=>playMsg(playBtn,text);
+    actions.appendChild(playBtn);
+    if(ann&&ann.dominant_anchor&&ann.dominant_anchor!=='none'){
+      const chips=[ann.dominant_anchor,...(ann.secondary_anchors||[])].slice(0,2);
+      [...new Set(chips)].forEach(a=>{const c=document.createElement('span');c.className='ac '+a;c.textContent=a;actions.appendChild(c);});
+      if(ann.failure_mode&&ann.failure_mode!=='none'){const c=document.createElement('span');c.className='ac '+ann.failure_mode;c.textContent=ann.failure_mode.replace(/_/g,' ');actions.appendChild(c);}
+    }
+    el.appendChild(actions);
+  }
+  conv.appendChild(el);
+  conv.scrollTop=conv.scrollHeight;
+  return el;
+}
+
+function showTyping(){
+  const conv=document.getElementById('conv');
+  const el=document.createElement('div'); el.className='msg a';
+  el.innerHTML='<div class="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
+  conv.appendChild(el); conv.scrollTop=conv.scrollHeight; return el;
+}
+
+function setMode(mode){
+  const p=document.getElementById('mpill');
+  if(mode==='compass'){p.textContent='Orienting';p.className='mpill c';}
+  else if(mode==='prism'){p.textContent='Exploring';p.className='mpill p';}
+  else{p.textContent='—';p.className='mpill n';}
+}
+
+function busy(on){
+  document.getElementById('sbtn').disabled=on;
+  document.getElementById('ui').disabled=on;
+}
+function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}}
+function ar(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,120)+'px';}
+
+// ── Mobile fixes ─────────────────────────────────────────────────────────
+function setVh(){document.documentElement.style.setProperty('--vh',window.innerHeight*.01+'px');}
+setVh();
+window.addEventListener('resize',setVh);
+window.addEventListener('orientationchange',()=>setTimeout(setVh,100));
+const uiEl=document.getElementById('ui');
+if(uiEl){uiEl.addEventListener('focus',()=>{setTimeout(()=>{const c=document.getElementById('conv');if(c)c.scrollTop=c.scrollHeight;},400);});}
+
+// ── Init ─────────────────────────────────────────────────────────────────
+window.addEventListener('load',()=>{
+  // Load voices async for iOS
+  if('speechSynthesis' in window) speechSynthesis.getVoices();
+  speechSynthesis && window.speechSynthesis.addEventListener && window.speechSynthesis.addEventListener('voiceschanged',()=>{});
+  checkAccess();
+});
+</script>
 </body>
 </html>
