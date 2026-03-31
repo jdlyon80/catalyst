@@ -176,7 +176,7 @@ textarea:disabled{opacity:.6;}
     <div class="welcome" id="welcome">
       <div class="wmark">◎</div>
       <h2>A space to think</h2>
-      <p>This can be a space to think something through, get your bearings, or explore whatever's on your mind — whatever feels right today.</p>
+      <p>This can be a space to get your bearings, think something through, or explore whatever&#39;s on your mind — whatever feels right today.</p>
       <p style="margin-top:4px;font-size:13px;color:var(--ink-faint)">When you're ready, share what's on your mind.</p>
     </div>
   </div>
@@ -475,13 +475,13 @@ async function callAPI(system, messages, maxTokens) {
 async function openingTurn() {
   const t=showTyping(); busy(true);
   try {
-    const full=await callAPI(SYS,[{role:'user',content:'[Session start — generate a brief, plain, genuinely neutral opening. 1 sentence only. No CRF language. No therapeutic register. Choose from or vary these: 'What's on your mind?', 'What would you like to share?', 'What would you like to think about today?' — keep it this simple and open. Do not signal what kind of conversation this will be.]'}],150);
+    const full=await callAPI(SYS,[{role:'user',content:"[Session start — generate a brief, plain, genuinely neutral opening. 1 sentence only. No CRF language. No therapeutic register. Choose from or vary these: Hi, what's on your mind? / What would you like to share? / What would you like to think about today? / What's on your mind? — keep it this simple and open. Do not signal what kind of conversation this will be.]"}],150);
     const reply=full.split('|||ANNOTATION|||')[0].trim();
     t.remove(); addMsg('a',reply);
     if(audioOn) speak(reply);
   } catch(e) {
     t.remove();
-    const fallback='What has been on your mind from your practice lately — anything that has stayed with you, or that you find yourself returning to?';
+    const fallback='Hi, what\'s on your mind?';
     addMsg('a',fallback);
     if(audioOn) speak(fallback);
   }
