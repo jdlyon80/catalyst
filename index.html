@@ -20,20 +20,6 @@
 html{height:100%;height:-webkit-fill-available;}
 body{height:100%;height:-webkit-fill-available;font-family:var(--fb);background:var(--paper);color:var(--ink);font-size:16px;line-height:1.6;overflow:hidden;-webkit-text-size-adjust:100%;}
 
-/* ── Access screen ── */
-#access-screen{min-height:100vh;min-height:-webkit-fill-available;display:flex;align-items:center;justify-content:center;padding:24px;overflow-y:auto;}
-.access-card{background:white;border:1px solid var(--pm);border-radius:16px;padding:32px 24px;max-width:400px;width:100%;box-shadow:0 4px 24px rgba(0,0,0,.06);}
-.access-logo{font-family:var(--fs);font-size:26px;letter-spacing:-.02em;margin-bottom:6px;}
-.access-logo span{color:var(--accent);}
-.access-tag{font-size:14px;color:var(--ink-soft);margin-bottom:32px;line-height:1.6;}
-.access-card label{display:block;font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:8px;}
-.access-card input[type="password"]{width:100%;padding:14px;border-radius:var(--r);border:1.5px solid var(--pm);background:var(--paper);font-family:var(--fb);font-size:16px;color:var(--ink);outline:none;transition:border-color .2s;-webkit-appearance:none;letter-spacing:.2em;}
-.access-card input[type="password"]:focus{border-color:var(--al);}
-.access-err{margin-top:10px;font-size:13px;color:#8a3a1a;display:none;}
-.access-btn{width:100%;margin-top:16px;padding:14px;border-radius:var(--r);border:none;background:var(--accent);color:white;font-family:var(--fb);font-size:16px;font-weight:500;cursor:pointer;-webkit-appearance:none;touch-action:manipulation;}
-.access-btn:active{background:var(--al);}
-.access-note{margin-top:20px;font-size:12px;color:var(--ink-faint);line-height:1.6;text-align:center;}
-
 /* ── App ── */
 #app{display:none;flex-direction:column;height:100vh;height:-webkit-fill-available;max-width:820px;margin:0 auto;}
 
@@ -176,19 +162,6 @@ textarea:disabled{opacity:.6;}
 </head>
 <body>
 
-<!-- Access screen -->
-<div id="access-screen">
-  <div class="access-card">
-    <div class="access-logo">Catalyst<span>.</span></div>
-    <div class="access-tag">A reflective practice tool for GPs and GP trainees. A space to think — without agenda, without assessment.</div>
-    <label for="code-input">Access code</label>
-    <input type="password" id="code-input" placeholder="······" autocomplete="off" onkeydown="if(event.key==='Enter')checkCode()">
-    <div class="access-err" id="access-err">That code isn't right — check with the person who sent you the link.</div>
-    <button class="access-btn" onclick="checkCode()">Enter →</button>
-    <div class="access-note">Your reflections stay in your browser. Nothing is stored or shared.</div>
-  </div>
-</div>
-
 <!-- Main app -->
 <div id="app">
   <div class="hdr">
@@ -291,8 +264,6 @@ textarea:disabled{opacity:.6;}
 <script>
 // ── Config ───────────────────────────────────────────────────────────────
 const WORKER_URL = 'https://catalyst-proxy.jdlyon80.workers.dev';
-const ACCESS_CODE = '462387';
-const LS_KEY = 'catalyst_access';
 
 // ── System prompts ───────────────────────────────────────────────────────
 const SYS = `Your north star is: be curious, not judgemental. In every mode, at every level of disclosure, your orientation is genuine curiosity about the practitioner's experience — never assessment, never challenge of the person, never resolution on their behalf.
@@ -483,29 +454,6 @@ function getAnchorQuestions(anchor, isDominant) {
 // ── State ────────────────────────────────────────────────────────────────
 let msgs=[], anns=[], turnCount=0, attunementQ1='', attunementQ2='';
 let audioOn=false, currentUtterance=null, recognition=null, isListening=false;
-
-// ── Access ───────────────────────────────────────────────────────────────
-function checkCode() {
-  const val = document.getElementById('code-input').value.trim();
-  const err = document.getElementById('access-err');
-  if (val === ACCESS_CODE) {
-    localStorage.setItem(LS_KEY, '1');
-    document.getElementById('access-screen').style.display='none';
-    document.getElementById('app').style.display='flex';
-    setTimeout(openingTurn, 400);
-  } else {
-    err.style.display='block';
-    document.getElementById('code-input').value='';
-  }
-}
-
-function checkAccess() {
-  if (localStorage.getItem(LS_KEY) === '1') {
-    document.getElementById('access-screen').style.display='none';
-    document.getElementById('app').style.display='flex';
-    setTimeout(openingTurn, 400);
-  }
-}
 
 // ── API ──────────────────────────────────────────────────────────────────
 async function callAPI(system, messages, maxTokens) {
@@ -861,7 +809,9 @@ window.addEventListener('load',()=>{
   // Load voices async for iOS
   if('speechSynthesis' in window) speechSynthesis.getVoices();
   speechSynthesis && window.speechSynthesis.addEventListener && window.speechSynthesis.addEventListener('voiceschanged',()=>{});
-  checkAccess();
+  // Launch directly — no access code required
+  document.getElementById('app').style.display='flex';
+  setTimeout(openingTurn, 400);
 });
 </script>
 </body>
