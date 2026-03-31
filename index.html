@@ -859,4 +859,10 @@ if(uiEl){uiEl.addEventListener('focus',()=>{setTimeout(()=>{const c=document.get
 // ── Init ─────────────────────────────────────────────────────────────────
 window.addEventListener('load',()=>{
   // Load voices async for iOS
-  if('speechSynthesis' in window) speechSynthesis.getVoice
+  if('speechSynthesis' in window) speechSynthesis.getVoices();
+  speechSynthesis && window.speechSynthesis.addEventListener && window.speechSynthesis.addEventListener('voiceschanged',()=>{});
+  checkAccess();
+});
+</script>
+</body>
+</html>
