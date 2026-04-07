@@ -20,6 +20,23 @@
 html{height:100%;height:-webkit-fill-available;}
 body{height:100%;height:-webkit-fill-available;font-family:var(--fb);background:var(--paper);color:var(--ink);font-size:16px;line-height:1.6;overflow:hidden;-webkit-text-size-adjust:100%;}
 
+/* ── Orientation screen ── */
+#orient-screen{display:none;position:fixed;inset:0;background:var(--paper);z-index:50;overflow-y:auto;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);}
+.orient-inner{max-width:520px;margin:0 auto;padding:32px 20px 40px;}
+.orient-logo{font-family:var(--fs);font-size:19px;letter-spacing:-.02em;margin-bottom:32px;color:var(--ink);}
+.orient-logo span{color:var(--accent);}
+.orient-q{margin-bottom:24px;}
+.orient-q h3{font-size:13px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:12px;}
+.orient-opt{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid var(--pm);border-radius:var(--r);margin-bottom:8px;cursor:pointer;transition:all .2s;user-select:none;}
+.orient-opt:hover{border-color:var(--accent);background:var(--af);}
+.orient-opt.selected{border-color:var(--accent);background:var(--af);}
+.orient-opt input{accent-color:var(--accent);width:16px;height:16px;flex-shrink:0;}
+.orient-opt label{font-size:14px;color:var(--ink-mid);cursor:pointer;line-height:1.4;}
+.orient-actions{display:flex;gap:12px;margin-top:32px;align-items:center;}
+.orient-start{flex:1;padding:14px;background:var(--accent);color:white;border:none;border-radius:var(--r);font-size:15px;font-family:var(--fb);cursor:pointer;transition:opacity .2s;}
+.orient-start:hover{opacity:.9;}
+.orient-skip{font-size:13px;color:var(--ink-faint);background:none;border:none;cursor:pointer;padding:8px;text-decoration:underline;text-underline-offset:3px;}
+
 /* ── App ── */
 #app{display:none;flex-direction:column;height:100vh;height:-webkit-fill-available;max-width:820px;margin:0 auto;}
 
@@ -163,6 +180,78 @@ textarea:disabled{opacity:.6;}
 <body>
 
 <!-- Main app -->
+<!-- Orientation screen -->
+<div id="orient-screen">
+  <div class="orient-inner">
+    <div class="orient-logo">Catalyst<span>.</span></div>
+
+    <div class="orient-q">
+      <h3>What are you looking for today?</h3>
+      <div class="orient-opt" onclick="toggleOpt(this)">
+        <input type="checkbox" id="o1"><label for="o1">Get something off my chest</label>
+      </div>
+      <div class="orient-opt" onclick="toggleOpt(this)">
+        <input type="checkbox" id="o2"><label for="o2">Think something through</label>
+      </div>
+      <div class="orient-opt" onclick="toggleOpt(this)">
+        <input type="checkbox" id="o3"><label for="o3">Explore something more openly</label>
+      </div>
+      <div class="orient-opt" onclick="toggleOpt(this)">
+        <input type="checkbox" id="o4"><label for="o4">Not sure yet</label>
+      </div>
+      <div class="orient-opt" onclick="toggleOpt(this)">
+        <input type="checkbox" id="o14"><label for="o14">Work out what to do about something</label>
+      </div>
+    </div>
+
+    <div class="orient-q">
+      <h3>How do you find this kind of conversation?</h3>
+      <div class="orient-opt" onclick="toggleOpt(this)">
+        <input type="checkbox" id="o5"><label for="o5">Usually useful</label>
+      </div>
+      <div class="orient-opt" onclick="toggleOpt(this)">
+        <input type="checkbox" id="o6"><label for="o6">I find it hard to open up</label>
+      </div>
+      <div class="orient-opt" onclick="toggleOpt(this)">
+        <input type="checkbox" id="o7"><label for="o7">Not sure this works for me</label>
+      </div>
+      <div class="orient-opt" onclick="toggleOpt(this)">
+        <input type="checkbox" id="o8"><label for="o8">New to this</label>
+      </div>
+    </div>
+
+    <div class="orient-q">
+      <h3>Anything that helps — or grates? <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:12px;color:var(--ink-faint)">(optional)</span></h3>
+      <div class="orient-opt" onclick="toggleOpt(this)">
+        <input type="checkbox" id="o9"><label for="o9">Keep it structured</label>
+      </div>
+      <div class="orient-opt" onclick="toggleOpt(this)">
+        <input type="checkbox" id="o10"><label for="o10">Don't push too hard</label>
+      </div>
+      <div class="orient-opt" onclick="toggleOpt(this)">
+        <input type="checkbox" id="o11"><label for="o11">Ask me questions — don't just reflect back</label>
+      </div>
+      <div class="orient-opt" onclick="toggleOpt(this)">
+        <input type="checkbox" id="o12"><label for="o12">Plain language please — no therapy-speak</label>
+      </div>
+      <div class="orient-opt" onclick="toggleOpt(this)">
+        <input type="checkbox" id="o13"><label for="o13">Give me space to think</label>
+      </div>
+      <div class="orient-opt" onclick="toggleOpt(this)">
+        <input type="checkbox" id="o15"><label for="o15">Help me think toward a conclusion</label>
+      </div>
+      <div class="orient-opt" onclick="toggleOpt(this)">
+        <input type="checkbox" id="o16"><label for="o16">I'd like to leave with something concrete</label>
+      </div>
+    </div>
+
+    <div class="orient-actions">
+      <button class="orient-start" onclick="startFromOrient()">Start conversation →</button>
+      <button class="orient-skip" onclick="startFromOrient(true)">Skip</button>
+    </div>
+  </div>
+</div>
+
 <div id="app">
   <div class="hdr">
     <div class="logo">Catalyst<span>.</span></div>
@@ -266,7 +355,25 @@ textarea:disabled{opacity:.6;}
 const WORKER_URL = 'https://catalyst-proxy.jdlyon80.workers.dev';
 
 // ── System prompts ───────────────────────────────────────────────────────
-const SYS = `Your north star is: be curious, not judgemental. In every mode, at every level of disclosure, your orientation is genuine curiosity about the practitioner's experience — never assessment, never challenge of the person, never resolution on their behalf.
+const SYS = `Your north star is: be curious, not judgemental.
+
+ORIENTATION CONTEXT
+The practitioner may have completed a brief orientation before starting. If orientation data is present in the first message, use it silently to calibrate your approach — never reference it explicitly or acknowledge it directly. Apply it as follows:
+- "Get something off my chest" → expect cognitive overwhelm or fragmentation; prioritise containing and receiving in early turns
+- "Think something through" → expect affect blocked or structured presentation; Compass orientation likely
+- "Explore something more openly" → higher safety likely; Prism may become available earlier
+- "Not sure yet" → withhold assumptions; read the field from the first turn
+- "I find it hard to open up" → move more slowly; do not press; accept the session at the level offered
+- "Not sure this works for me" → defended safety likely; prioritise rapport; do not deepen without clear signal
+- "New to this" → be warmer and more orienting in early turns; signpost more explicitly
+- "Keep it structured" → use clarifying/mapping questions; summarise frequently
+- "Don't push too hard" → do not advance past consolidation; accept level offered
+- "Ask me questions — don't just reflect back" → reduce pure mirroring; ensure each turn contains a clear question after receiving
+- "Plain language please — no therapy-speak" → suppress all contemplative register; absolutely no: hold, sitting with, landing, arising, what's in that, what does that bring up, embodied, noticing; use plain GP colleague language only
+- "Give me space to think" → longer pauses acceptable; do not rush to fill; brief acknowledgements preferred
+- "Work out what to do about something" → lean toward Prism earlier when safety is sufficient; help the practitioner work it out themselves rather than sitting with open tension; the attunement questions should invite forward-looking thinking
+- "Help me think toward a conclusion" → move toward integration when the field allows; do not leave suspended in open enquiry indefinitely; prioritise the depth arc; attunement questions should actively invite forward movement
+- "I would like to leave with something concrete" → ensure closing attunement questions orient toward action or decision; when Prism is available, gently guide toward what this means for practice going forward In every mode, at every level of disclosure, your orientation is genuine curiosity about the practitioner's experience — never assessment, never challenge of the person, never resolution on their behalf.
 
 WHO YOU ARE
 You are a reflective practice facilitator working within the Catalytic Reflection Framework (CRF). You hold a genuine, non-directive reflective conversation with a GP or GP trainee. Simultaneously you maintain a silent structured annotation of the reflective field. The annotation is never visible to the practitioner.
@@ -463,6 +570,7 @@ function getAnchorQuestions(anchor, isDominant) {
 
 // ── State ────────────────────────────────────────────────────────────────
 let msgs=[], anns=[], turnCount=0, attunementQ1='', attunementQ2='';
+let orientContext='';
 let audioOn=false, currentUtterance=null, recognition=null, isListening=false;
 
 // ── API ──────────────────────────────────────────────────────────────────
@@ -482,10 +590,52 @@ async function callAPI(system, messages, maxTokens) {
 }
 
 // ── Conversation ─────────────────────────────────────────────────────────
+function toggleOpt(el) {
+  el.classList.toggle('selected');
+  const cb = el.querySelector('input[type=checkbox]');
+  if (cb) cb.checked = !cb.checked;
+}
+
+function buildOrientContext() {
+  const labels = {
+    o1: "looking to get something off their chest",
+    o2: "looking to think something through",
+    o3: "looking to explore something more openly",
+    o4: "not sure yet what they are looking for",
+    o5: "finds this kind of conversation usually useful",
+    o6: "finds it hard to open up",
+    o7: "not sure reflective conversation works for them",
+    o8: "new to reflective practice conversations",
+    o9: "prefers a structured approach",
+    o10: "prefers not to be pushed too hard",
+    o11: "wants questions rather than just reflections",
+    o12: "wants plain language and no therapy-speak",
+    o13: "wants space to think and is comfortable with pauses",
+    o14: "wants to work out what to do about something — lean toward Prism earlier when safety is sufficient; ensure attunement questions invite forward-looking thinking; help them work it out rather than sitting with it",
+    o15: "wants to think toward a conclusion — move toward integration when the field allows; do not leave them suspended indefinitely in open enquiry; the attunement questions should actively invite forward movement",
+    o16: "wants to leave with something concrete — ensure the closing attunement questions orient toward action or decision; prioritise depth arc when safety is sufficient"
+  };
+  const selected = [];
+  Object.entries(labels).forEach(([id, label]) => {
+    const el = document.getElementById(id);
+    if (el && el.checked) selected.push(label);
+  });
+  if (!selected.length) return '';
+  return '[Orientation context: The practitioner is ' + selected.join('; ') + '. Use silently to calibrate.]';
+}
+
+function startFromOrient(skip) {
+  orientContext = skip ? '' : buildOrientContext();
+  document.getElementById('orient-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  setTimeout(openingTurn, 400);
+}
+
 async function openingTurn() {
   const t=showTyping(); busy(true);
   try {
-    const full=await callAPI(SYS,[{role:'user',content:"[Session start — generate a brief, plain, genuinely neutral opening. 1 sentence only. No CRF language. No therapeutic register. Choose from or vary these: Hi, what's on your mind? / What would you like to share? / What would you like to think about today? / What's on your mind? — keep it this simple and open. Do not signal what kind of conversation this will be.]"}],150);
+    const orientPrefix = orientContext ? orientContext + ' ' : '';
+  callAPI(SYS,[{role:'user',content:orientPrefix+"[Session start — generate a brief, plain, genuinely neutral opening. 1 sentence only. No CRF language. No therapeutic register. Choose from or vary these: Hi, what's on your mind? / What would you like to share? / What would you like to think about today? / What's on your mind? — keep it this simple and open. Do not signal what kind of conversation this will be.]"}],150);
     const reply=full.split('|||ANNOTATION|||')[0].trim();
     t.remove(); addMsg('a',reply);
     if(audioOn) speak(reply);
@@ -508,7 +658,8 @@ async function send() {
   msgs.push({role:'user',content:text});
   const t=showTyping();
   try {
-    const full=await callAPI(SYS,msgs,900);
+    const sysWith = orientContext ? SYS + '\n\n' + orientContext : SYS;
+    const full=await callAPI(sysWith,msgs,900);
     const parts=full.split('|||ANNOTATION|||');
     const reply=parts[0].trim();
     let ann=null;
@@ -819,9 +970,8 @@ window.addEventListener('load',()=>{
   // Load voices async for iOS
   if('speechSynthesis' in window) speechSynthesis.getVoices();
   speechSynthesis && window.speechSynthesis.addEventListener && window.speechSynthesis.addEventListener('voiceschanged',()=>{});
-  // Launch directly — no access code required
-  document.getElementById('app').style.display='flex';
-  setTimeout(openingTurn, 400);
+  // Show orientation screen first
+  document.getElementById('orient-screen').style.display='block';
 });
 </script>
 </body>
