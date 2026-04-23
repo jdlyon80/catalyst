@@ -182,8 +182,8 @@ textarea:disabled{opacity:.6;}
 .at-textarea:focus{border-color:var(--al);}
 .at-skip{padding:13px 16px;border-radius:var(--r);border:1.5px solid var(--pm);background:transparent;color:var(--ink-soft);font-family:var(--fb);font-size:14px;cursor:pointer;touch-action:manipulation;white-space:nowrap;}
 .at-skip:active{border-color:var(--al);}
-.at-play-btn{display:flex;align-items:center;gap:6px;background:none;border:none;color:var(--ink-soft);font-size:13px;cursor:pointer;padding:0;margin-bottom:12px;font-family:var(--fb);}
-.at-play-btn:active{color:var(--accent);}
+.at-play-btn{display:inline-flex;align-items:center;gap:6px;background:var(--af);border:1px solid var(--pm);border-radius:20px;color:var(--accent);font-size:12px;font-weight:500;cursor:pointer;padding:5px 12px;margin-bottom:12px;font-family:var(--fb);touch-action:manipulation;}
+.at-play-btn:active{background:var(--accent);color:white;}
 
 /* ── Export overlay ── */
 .ep-ov{position:fixed;inset:0;background:rgba(26,26,24,.7);display:none;align-items:flex-end;justify-content:center;z-index:100;}
@@ -402,13 +402,13 @@ textarea:disabled{opacity:.6;}
     <div class="op-sub">Before your summary. There are no right answers here — this is yours.</div>
 
     <div id="at-q1-play-row" style="display:none;margin-bottom:4px">
-      <button class="at-play-btn" onclick="playAttunementQ(1)">▶ Hear the question</button>
+      <button class="at-play-btn" onclick="playAttunementQ(1)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;flex-shrink:0"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor" stroke="none"/></svg> Hear the question</button>
     </div>
     <div class="at-q-label" id="at-q1-label">What are you sitting with from this conversation?</div>
     <textarea class="at-textarea" id="at-q1" placeholder="You can be as brief or as open as feels right..."></textarea>
 
     <div id="at-q2-play-row" style="display:none;margin-bottom:4px">
-      <button class="at-play-btn" onclick="playAttunementQ(2)">▶ Hear the question</button>
+      <button class="at-play-btn" onclick="playAttunementQ(2)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;flex-shrink:0"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor" stroke="none"/></svg> Hear the question</button>
     </div>
     <div class="at-q-label" id="at-q2-label">Is there anything you want to carry differently into practice?</div>
     <div class="at-q-hint">Optional — leave blank if you're not sure yet.</div>
