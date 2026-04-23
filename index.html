@@ -345,7 +345,12 @@ textarea:disabled{opacity:.6;}
     <div class="logo">Catalyst<span>.</span></div>
     <div class="hdr-r">
       <div class="mpill n" id="mpill">—</div>
-      <button class="icon-btn" id="audio-toggle" onclick="toggleAudio()" title="Toggle audio">♪</button>
+      <button class="icon-btn" id="audio-toggle" onclick="toggleAudio()" title="Toggle voice responses" aria-label="Toggle audio">
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+          <path d="M4 7.5h2.5l4-3.5v12l-4-3.5H4a.75.75 0 01-.75-.75v-3.5A.75.75 0 014 7.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+          <path d="M13.5 7a4 4 0 010 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </button>
       <button class="ebtn" id="expbtn" disabled onclick="showOffRamp()">Summary</button>
     </div>
   </div>
@@ -472,13 +477,13 @@ The practitioner may have completed a brief orientation before starting. If orie
 - "Give me space to think" → longer pauses acceptable; do not rush to fill; brief acknowledgements preferred
 
 SLIDER CALIBRATION (shape of conversation):
-- Structure low → avoid imposing structure; follow the practitioner's own direction
-- Structure high → clarifying and mapping questions; summarise frequently; clear orientation
-- Pace low → minimal questioning; mirroring and brief acknowledgements; let practitioner lead
-- Pace high → ensure each turn contains a clear question; move things forward actively
-- Register low → plain and concrete only; suppress all contemplative register; no therapy-speak
-- Register high → full register available; conceptual and exploratory language acceptable
-- Centre position → no preference; read the field from practitioner's own language In every mode, at every level of disclosure, your orientation is genuine curiosity about the practitioner's experience — never assessment, never challenge of the person, never resolution on their behalf.
+- Structure: open/mostly open → avoid imposing structure; follow practitioner's own direction
+- Structure: fairly/fully structured → clarifying and mapping questions; summarise frequently; clear orientation
+- Pace: lots of space/mostly space → minimal questioning; mirroring and brief acknowledgements
+- Pace: fairly/fully question-led → ensure each turn contains a clear question; move things forward
+- Register: plain only/mostly plain → suppress all contemplative register; plain concrete language only
+- Register: conceptual/abstract fine → full register available; exploratory language acceptable
+- Centre (No preference) → read the field from practitioner's own language In every mode, at every level of disclosure, your orientation is genuine curiosity about the practitioner's experience — never assessment, never challenge of the person, never resolution on their behalf.
 
 WHO YOU ARE
 You are a reflective practice facilitator working within the Catalytic Reflection Framework (CRF). You hold a genuine, non-directive reflective conversation with a GP or GP trainee. Simultaneously you maintain a silent structured annotation of the reflective field. The annotation is never visible to the practitioner.
@@ -746,31 +751,25 @@ async function callAPI(system, messages, maxTokens) {
 const SLIDER_THRESHOLD = 10;
 const sliderCopy = {
   structure: [
-    [0,  15,  'Fully open — no structure at all'],
-    [16, 35,  'Mostly open — a light touch of direction'],
-    [36, 49,  'Slightly open — follow my lead mostly'],
+    [0,  24,  'Open — no structure, find my own way'],
+    [25, 49,  'Mostly open — light touch of direction'],
     [50, 50,  'No preference'],
-    [51, 64,  'Slightly structured — some mapping helps'],
-    [65, 84,  'Fairly structured — clear direction welcome'],
-    [85, 100, 'Structured throughout — keep me oriented']
+    [51, 75,  'Fairly structured — clear direction welcome'],
+    [76, 100, 'Structured throughout — keep me oriented']
   ],
   pace: [
-    [0,  15,  'Maximum space — let me find my own way'],
-    [16, 35,  'Mostly space — questions sparingly'],
-    [36, 49,  'Lean toward space — but ask when needed'],
+    [0,  24,  'Lots of space — minimal questioning'],
+    [25, 49,  'Mostly space — questions sparingly'],
     [50, 50,  'No preference'],
-    [51, 64,  'Lean toward questions — help move things on'],
-    [65, 84,  'Fairly question-led — keep things moving'],
-    [85, 100, 'Question-led throughout — active facilitation']
+    [51, 75,  'Fairly question-led — keep things moving'],
+    [76, 100, 'Question-led throughout — active facilitation']
   ],
   register: [
-    [0,  15,  'Plain only — direct and concrete throughout'],
-    [16, 35,  'Mostly plain — minimal abstraction'],
-    [36, 49,  'Lean plain — but some depth is fine'],
+    [0,  24,  'Plain only — direct and concrete throughout'],
+    [25, 49,  'Mostly plain — minimal abstraction'],
     [50, 50,  'No preference'],
-    [51, 64,  'Some abstraction is fine'],
-    [65, 84,  'Conceptual language welcome'],
-    [85, 100, 'Abstract and exploratory register fine']
+    [51, 75,  'Conceptual language welcome'],
+    [76, 100, 'Abstract and exploratory register fine']
   ]
 };
 
