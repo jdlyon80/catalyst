@@ -341,7 +341,7 @@ textarea:disabled{opacity:.6;}
 
 <div id="app">
   <div class="hdr">
-    <div class="logo">Catalyst<span>.</span></div>
+    <div class="logo" id="main-logo">Catalyst<span>.</span></div>
     <div class="hdr-r">
       <div class="mpill n" id="mpill">—</div>
       
@@ -734,6 +734,7 @@ function getAnchorQuestions(anchor, isDominant) {
 // ── State ────────────────────────────────────────────────────────────────
 let msgs=[], anns=[], turnCount=0, attunementQ1='', attunementQ2='';
 let orientContext='';
+const devMode = new URLSearchParams(window.location.search).get('dev') === '1';
 let audioOn=false, currentUtterance=null, recognition=null, isListening=false;
 
 // ── API ──────────────────────────────────────────────────────────────────
@@ -1228,10 +1229,13 @@ function addMsg(role,text,ann){
     playBtn.innerHTML=playIcon(); playBtn.title='Listen';
     playBtn.onclick=()=>playMsg(playBtn,text);
     actions.appendChild(playBtn);
-    if(ann&&ann.dominant_anchor&&ann.dominant_anchor!=='none'){
+    if(devMode&&ann&&ann.dominant_anchor&&ann.dominant_anchor!=='none'){
       const chips=[ann.dominant_anchor,...(ann.secondary_anchors||[])].slice(0,2);
       [...new Set(chips)].forEach(a=>{const c=document.createElement('span');c.className='ac '+a;c.textContent=a;actions.appendChild(c);});
       if(ann.failure_mode&&ann.failure_mode!=='none'){const c=document.createElement('span');c.className='ac '+ann.failure_mode;c.textContent=ann.failure_mode.replace(/_/g,' ');actions.appendChild(c);}
+      // Show compass phase and session arc in dev mode
+      if(ann.compass_phase&&ann.compass_phase!=='null'){const c=document.createElement('span');c.className='ac';c.style.background='var(--paper-warm)';c.style.color='var(--ink-soft)';c.textContent=ann.compass_phase;actions.appendChild(c);}
+      if(ann.session_arc){const c=document.createElement('span');c.className='ac';c.style.background='var(--paper-warm)';c.style.color='var(--ink-soft)';c.textContent=ann.session_arc;actions.appendChild(c);}
     }
     el.appendChild(actions);
   }
@@ -1276,6 +1280,11 @@ window.addEventListener('load',()=>{
   speechSynthesis && window.speechSynthesis.addEventListener && window.speechSynthesis.addEventListener('voiceschanged',()=>{});
   // Show orientation screen first
   document.getElementById('orient-screen').style.display='block';
+  // Dev mode indicator
+  if(devMode){
+    const logo=document.getElementById('main-logo');
+    if(logo) logo.innerHTML='Catalyst<span>.</span> <span style="font-size:10px;font-weight:500;letter-spacing:.06em;color:var(--cb);background:var(--cbg);padding:2px 6px;border-radius:10px;vertical-align:middle">DEV</span>';
+  }
   initSliders();
   // Set mic button icon via JS to prevent iOS emoji substitution
   const micBtn = document.getElementById('mic-btn');
