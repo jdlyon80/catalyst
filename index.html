@@ -40,10 +40,10 @@ body{height:100%;height:-webkit-fill-available;font-family:var(--fb);background:
 .orient-opt:hover{border-color:var(–accent);background:var(–af);}
 .orient-opt.selected{border-color:var(–accent);background:var(–af);}
 .orient-opt input{accent-color:var(–accent);width:16px;height:16px;flex-shrink:0;}
-.orient-icon{width:32px;height:32px;border-radius:50%;background:var(–af);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s;}
-.orient-opt.selected .orient-icon{background:var(–accent);}
-.orient-opt.selected .orient-icon svg path,.orient-opt.selected .orient-icon svg circle,.orient-opt.selected .orient-icon svg rect{stroke:white;}
-.orient-opt.selected .orient-icon svg circle[fill],.orient-opt.selected .orient-icon svg path[fill]{fill:white;stroke:none;}
+.orient-icon{width:32px;height:32px;border-radius:50%;background:var(–af);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s;color:var(–accent);}
+.orient-opt.selected .orient-icon{background:var(–accent);color:white;}
+.orient-opt.selected .orient-icon svg path,.orient-opt.selected .orient-icon svg circle,.orient-opt.selected .orient-icon svg rect{stroke:currentColor;}
+.orient-opt.selected .orient-icon svg circle[fill],.orient-opt.selected .orient-icon svg path[fill]{fill:currentColor;stroke:none;}
 .orient-opt label{font-size:14px;color:var(–ink-mid);cursor:pointer;line-height:1.4;}
 .orient-actions{display:flex;gap:12px;margin-top:32px;align-items:center;}
 .orient-start{flex:1;padding:14px;background:var(–accent);color:white;border:none;border-radius:var(–r);font-size:15px;font-family:var(–fb);cursor:pointer;transition:opacity .2s;}
@@ -276,26 +276,26 @@ textarea:disabled{opacity:.6;}
 <div class="orient-q">
   <h3>What are you looking for today?</h3>
   <div class="orient-opt" onclick="toggleOpt(this)">
-    <div class="orient-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 7.5h2l6-3.5v12l-6-3.5H4a1 1 0 01-1-1v-3a1 1 0 011-1z" stroke="var(--accent)" stroke-width="1.5" stroke-linejoin="round"/><path d="M6 7.5v5" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/><path d="M16 7a4 4 0 010 6" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/></svg></div><label for="o1">Get something off my chest</label>
+    <div class="orient-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 7.5h2l6-3.5v12l-6-3.5H4a1 1 0 01-1-1v-3a1 1 0 011-1z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M6 7.5v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M16 7a4 4 0 010 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div><label for="o1">Get something off my chest</label>
   </div>
   <div class="orient-opt" onclick="toggleOpt(this)">
-    <div class="orient-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="var(--accent)" stroke-width="1.5"/><path d="M7 8c0-1.66 1.34-3 3-3s3 1.34 3 3c0 1.5-1 2.5-3 3v1" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/><circle cx="10" cy="15" r=".75" fill="var(--accent)"/></svg></div><label for="o2">Think something through</label>
+    <div class="orient-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/><path d="M7 8c0-1.66 1.34-3 3-3s3 1.34 3 3c0 1.5-1 2.5-3 3v1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="10" cy="15" r=".75" fill="currentColor"/></svg></div><label for="o2">Think something through</label>
   </div>
   <div class="orient-opt" onclick="toggleOpt(this)">
-    <div class="orient-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7.5" stroke="var(--accent)" stroke-width="1.5"/><path d="M13 7l-2 4-4 2 2-4 4-2z" stroke="var(--accent)" stroke-width="1.5" stroke-linejoin="round"/></svg></div><label for="o3">Not sure where to start</label>
+    <div class="orient-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7.5" stroke="currentColor" stroke-width="1.5"/><path d="M13 7l-2 4-4 2 2-4 4-2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></div><label for="o3">Not sure where to start</label>
   </div>
 </div>
 
 <div class="orient-q">
   <h3>How do you tend to find reflection?</h3>
   <div class="orient-opt" onclick="toggleOpt(this)">
-    <div class="orient-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="var(--accent)" stroke-width="1.5"/><path d="M7 10l2.5 2.5L14 7.5" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><label for="o5">Usually useful</label>
+    <div class="orient-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/><path d="M7 10l2.5 2.5L14 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><label for="o5">Usually useful</label>
   </div>
   <div class="orient-opt" onclick="toggleOpt(this)">
-    <div class="orient-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="4.5" y="9" width="11" height="8" rx="1.5" stroke="var(--accent)" stroke-width="1.5"/><path d="M7 9V7a3 3 0 016 0v2" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/><circle cx="10" cy="13" r="1.25" fill="var(--accent)"/></svg></div><label for="o6">I find it hard to open up</label>
+    <div class="orient-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="4.5" y="9" width="11" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M7 9V7a3 3 0 016 0v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="10" cy="13" r="1.25" fill="currentColor"/></svg></div><label for="o6">I find it hard to open up</label>
   </div>
   <div class="orient-opt" onclick="toggleOpt(this)">
-    <div class="orient-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 16V9" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/><path d="M10 9c0-3 2.5-5 5.5-4.5C15.5 7.5 13 9 10 9z" stroke="var(--accent)" stroke-width="1.5" stroke-linejoin="round"/><path d="M10 12c0-2-2-3.5-4.5-3C5.5 11.5 7.5 12.5 10 12z" stroke="var(--accent)" stroke-width="1.5" stroke-linejoin="round"/></svg></div><label for="o8">New to this</label>
+    <div class="orient-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 16V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M10 9c0-3 2.5-5 5.5-4.5C15.5 7.5 13 9 10 9z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M10 12c0-2-2-3.5-4.5-3C5.5 11.5 7.5 12.5 10 12z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></div><label for="o8">New to this</label>
   </div>
 </div>
 
