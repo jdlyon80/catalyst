@@ -343,7 +343,7 @@ textarea:disabled{opacity:.6;}
   <div class="hdr">
     <div class="logo" id="main-logo">Catalyst<span>.</span></div>
     <div class="hdr-r">
-      <div class="mpill n" id="mpill">—</div>
+      <div class="mpill n" id="mpill" style="display:none">—</div>
       
       <button class="ebtn" id="expbtn" disabled onclick="showOffRamp()">Summary</button>
     </div>
@@ -1253,6 +1253,8 @@ function showTyping(){
 
 function setMode(mode){
   const p=document.getElementById('mpill');
+  if(!devMode){p.style.display='none';return;}
+  p.style.display='';
   if(mode==='compass'){p.textContent='Orienting';p.className='mpill c';}
   else if(mode==='prism'){p.textContent='Exploring';p.className='mpill p';}
   else{p.textContent='—';p.className='mpill n';}
