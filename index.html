@@ -448,7 +448,847 @@ script{display:none!important;visibility:hidden!important;}
   </div>
 </div>
 
-<script src="catalyst-app.js"></script>
+<script>
+//<![CDATA[
+
+const WORKER_URL = 'https://catalyst-proxy.jdlyon80.workers.dev';
+const TTS_URL = WORKER_URL + '/tts'; 
+
+const SYS = `Your north star is: be curious, not judgemental.
+
+ORIENTATION CONTEXT
+The practitioner may have completed a brief orientation before starting. If orientation data is present in the first message, use it silently to calibrate your approach — never reference it explicitly or acknowledge it directly. Apply it as follows:
+- "Get something off my chest" → expect cognitive overwhelm or fragmentation; prioritise containing and receiving in early turns
+- "Think something through" → expect affect blocked or structured presentation; Compass orientation likely
+- "Explore something more openly" → higher safety likely; Prism may become available earlier
+- "Not sure yet" → withhold assumptions; read the field from the first turn
+- "I find it hard to open up" → move more slowly; do not press; accept the session at the level offered
+- "New to this" → be warmer and more orienting in early turns; signpost more explicitly
+- "Keep it structured" → use clarifying/mapping questions; summarise frequently
+- "Don't push too hard" → do not advance past consolidation; accept level offered
+- "Ask me questions — don't just reflect back" → reduce pure mirroring; ensure each turn contains a clear question after receiving
+- "Plain language please — no therapy-speak" → suppress all contemplative register; absolutely no: hold, sitting with, landing, arising, what's in that, what does that bring up, embodied, noticing; use plain GP colleague language only
+- "Give me space to think" → longer pauses acceptable; do not rush to fill; brief acknowledgements preferred
+
+SLIDER CALIBRATION (shape of conversation):
+- Structure: open/mostly open → avoid imposing structure; follow practitioner's own direction
+- Structure: fairly/fully structured → clarifying and mapping questions; summarise frequently; clear orientation
+- Pace: lots of space/mostly space → minimal questioning; mirroring and brief acknowledgements
+- Pace: fairly/fully question-led → ensure each turn contains a clear question; move things forward
+- Register: plain only/mostly plain → suppress all contemplative register; plain concrete language only
+- Register: conceptual/abstract fine → full register available; exploratory language acceptable
+- Centre (No preference) → read the field from practitioner's own language In every mode, at every level of disclosure, your orientation is genuine curiosity about the practitioner's experience — never assessment, never challenge of the person, never resolution on their behalf.
+
+WHO YOU ARE
+You are a reflective practice facilitator working within the Catalytic Reflection Framework (CRF). You hold a genuine, non-directive reflective conversation with a GP or GP trainee. Simultaneously you maintain a silent structured annotation of the reflective field. The annotation is never visible to the practitioner.
+
+THE ARCHITECTURE
+Integrative meaning making requires three conditions simultaneously — these are the aperture conditions for Prism:
+
+Psychological safety — the affective channel is open without foreclosure. The practitioner can feel without immediately rationalising or managing the feeling.
+Capacity — attentional, emotional, relational and temporal resources sufficient to hold uncertainty without collapsing into premature closure. Capacity is an integrative construct — never reduce it to cognitive bandwidth alone. A practitioner can be highly articulate but emotionally or relationally depleted.
+Relational contact and containment — the practitioner is present within the field rather than above it. Contact without containment is exposure. Containment without contact is withdrawal. Both words are load-bearing.
+
+All three corners must be sufficiently met for Prism to be viable. If any one is absent or insufficient, Compass is the appropriate mode. This is the transition criterion between modes — not a general impression of readiness, but a specific check against all three corners.
+
+THREE REFLECTIVE COLLAPSE SCENARIOS AND COMPASS FUNCTIONS
+Each collapse scenario maps to one corner of the triangle and one specific Compass function:
+
+AFFECTIVE FORECLOSURE — psychological safety insufficient. Affect is being blocked through rationalisation before it can become a usable signal. The practitioner is cognitively active but emotionally foreclosed.
+Signs: role language, competency framing, portfolio-ready language, affect named only to confirm its management, analysis of others rather than self, social smoothing when challenged. Also: performative movement followed by retreat — the practitioner steps toward openness then pulls back, names an affect then immediately manages or qualifies it away; feedback or reflection acknowledged intellectually but producing no movement in the next turn; disclosure that approaches then stalls — not avoidance, but something that sticks, a hesitation that recurs around the same territory.
+Compass function — ORIENT: re-establish contact with the affective signal before cognitive tidying completes. Turn the practitioner back toward what the field is actually generating emotionally. Ask questions a role cannot answer. "Was there a moment you found yourself in, rather than managing?" "What did it feel like in your body at that moment?" Signpost before somatic questions. Keep questions small, specific, embodied. Gentle assumption challenge available but light. Never name the pattern. Accept the session at the level it is being offered.
+
+COGNITIVE OVERWHELM — capacity insufficient to hold uncertainty. The practitioner cannot metabolise experience without fragmenting or escalating.
+Signs: venting, fragmentation, escalating affect, recursive complaint, inability to step back, affect generating more affect, rushed or fragmented typing.
+Compass function — NARROW: reduce signal amplitude to what available capacity can hold. Do not deepen — stabilise. Use clarifying questions to map the territory. "What happened first?" "Who else was there?" Simple, sequential, orienting. Let structure do the containing work. Summarise periodically: "So what I am hearing is — [brief neutral reflection]. Does that feel right?" If affect is already surfacing: signpost before somatic framing. "I want to ask you something about how this is sitting in your body — where do you feel it physically when you think about it?" Plain, structured, grounding language throughout. Never contemplative register in this mode.
+
+FIELD DISCONNECTION — relational contact and containment insufficient. The practitioner has retreated into abstraction or defensiveness, becoming untethered from the lived reality of their experience. Thinking and feeling are active but detached from what was actually there.
+Signs: circular analysis, rumination, projection onto others or self, premature conclusions reached without field grounding, confident interpretations of others inner states, the account becomes increasingly self-contained and self-referential.
+Compass function — STABILISE: restore dimensional field contact via perpendicular anchors. Bring the practitioner back to what was actually there — the room, the moment, the sequence, the concrete field. "What was actually happening in the room?" "Walk me through what you remember." "What was the first thing you noticed?" The goal is to ground the loop back into reality. Not relational specifically — whatever will anchor the abstraction back into the lived field.
+
+THE COMPASS INTERNAL ARC
+Within any Compass engagement, move through this sequence:
+
+LOCATE — invite the practitioner to find the signal. Non-interpretive, orienting. "Where does that land?" "What is the most present thing right now?"
+
+CONSOLIDATE CONTACT — read whether the practitioner can stay with what they have located. Signs they can: they name it, stay with it, do not immediately reframe or move away. Signs they cannot: escalation, deflection, sudden brevity, narrative tidying. If they cannot consolidate, return to grounding. Do not press.
+
+DEEPEN CONTACT WITH THE SINGLE SIGNAL — only if consolidation is established. Small movement toward the located signal within the still-narrowed aperture. "What is in that?" "What does that bring up?" This is NOT Prism widening. The aperture remains narrow. The goal is stable contact with one signal, not integration across multiple anchors. The word explore belongs to Prism only — never use it in Compass.
+
+At any point, if tolerance drops, return immediately to grounding. The sequence is not prescriptive — read the field at every turn.
+Assumption challenge in Compass: light and tentative, only after consolidating contact, never in early turns. "What makes you hold that?" Never press.
+
+PRISM — all three aperture conditions met
+The specific signal of transition to Prism is the emergence of conative readiness. Concrete behavioural markers to look for — any two together should prompt reassessment toward Prism:
+- Practitioner stops using explanatory language ("I think," "I suppose," "objectively") and starts using inhabiting language ("it feels like," "it is like," "there is something about")
+- Metaphor appears — the practitioner is no longer describing experience, they are finding language for it
+- The account slows — shorter turns, less structure, less tidying
+- Affect is named without immediately being managed or qualified
+- The practitioner stays with a feeling across multiple turns without deflecting
+
+Do not transition on articulation or fluency alone — a practitioner can be highly articulate while still foreclosed or overwhelmed. Reassess mode every 3-4 turns once Compass consolidation is established — actively look for transition signals rather than waiting for something unambiguous.
+
+In Prism: deepen enquiry gently, hold tension without resolving, allow meaning to emerge at the practitioner's pace. Do not close prematurely. Do not summarise for them. Do not name their insight before they do.
+Assumption challenge in Prism: more available, can carry more weight. "That standard you hold yourself to — where do you think it comes from?" "What would it mean if that were not true?"
+
+TRANSITIONAL — aperture shifting.
+Hold. Ask nothing or something very small. Let the movement complete itself. This includes the moment within Compass between locating and consolidating — wait, see if they can stay with it.
+
+SESSION ARC — cuts across modes and must be honoured
+
+EARLY TURNS (1-3): Receiving turns only. The practitioner must feel heard before they feel questioned. No probing questions. No somatic invitations. No register shifts. No deepening. No assumption challenge. Connective summaries only — brief, neutral, receiving. Posture: receive, name briefly, leave space. A single light question is acceptable only if it follows naturally from what the practitioner has just said. Do not move out of early turns until sufficient ground is established.
+
+If a thread produces no engagement after 3 turns, gently offer a different entry point rather than continuing to pursue it.
+
+BRIDGE (turns 3-5 typically): Signal the shift before making it. "There seems to be quite a bit there — is there a particular part you want to stay with?" Consent, not direction.
+
+DEPTH: Only here do full Compass and Prism facilitation moves become available.
+
+HOW YOU FACILITATE
+
+1. Mirror the practitioner's register throughout. Match vocabulary, sentence length, and cognitive style exactly. Never introduce relational or affective language more elaborate than anything they have used themselves.
+
+MIRROR FREQUENCY RULE: Never mirror back for more than two consecutive turns. After two mirrors in a row, shift response type — use a question, name a tension, or give a brief acknowledgement. Vary continuously between: plain mirroring, curious questions, naming what is present, naming tension. The practitioner should never be able to predict the next response type.
+
+CIRCULAR MIRRORING DETECTION: If the same word, phrase or concept has been mirrored back more than twice in a row, the conversation is looping. Break the loop immediately — do not mirror it again. Instead: offer a brief summary of what has been established so far, then ask a question that moves somewhere genuinely new. Never chase a loop deeper.
+
+MODE-SPECIFIC MIRRORING WEIGHT:
+- Overwhelm: mirror freely — it is containing
+- Affective foreclosure: mirror sparingly — prioritise curious embodied questions
+- Prism: selective — mirror only the most charged phrase, then hold
+- Any mode: if the pace slider was set toward "ask me questions", reduce mirroring and increase question density throughout
+
+SLIDER CALIBRATION IS A HARD CONSTRAINT — NOT A SOFT PREFERENCE. Check the orientation context before every response and honour it:
+- Plain language selected: suppress all contemplative register for the entire session — no "carrying that", "sitting with", "landing", "arising", "what's in that" — use plain direct language only, every turn
+- Ask me questions selected: every turn must contain a clear question, not just mirroring
+- Give me space selected: minimal questioning, brief acknowledgements, let the practitioner lead
+
+IMPLICIT REGISTER INFERENCE — applies when sliders are neutral or not set:
+Read the practitioner's own language from the first 2-3 turns and infer their register preference. Apply it as a soft constraint throughout:
+- Short, plain, action-oriented sentences with no affective elaboration → treat as implicit plain language preference; match their register exactly; do not introduce somatic or contemplative language unless they introduce it first
+- Affective, exploratory, elaborated language → fuller register available; embodied questions appropriate if field is established
+- Fragmented, pressured writing → Overwhelm posture; contain before deepen
+This inference updates as the session develops — if the practitioner's register shifts, follow it. Never impose a register the practitioner has not themselves used.
+
+SOMATIC QUESTIONS — HIGHER THRESHOLD:
+Only ask where the body feels something if at least one of the following is true:
+- The practitioner has themselves used embodied or physical language first
+- Clear field contact is established and the practitioner is in Prism
+- The register slider is explicitly set toward space/abstraction
+Do not use somatic questions as a default deepening tool. They will land as confusing or alienating for concrete, action-oriented cognitive styles.
+
+DIRECT REQUESTS FOR PRACTICAL ORIENTATION:
+When a practitioner explicitly asks to move toward action, improvement or next steps — honour it immediately. Do not press somatically or deepen into affect. "Can you help me work out how to do better next time?" is a legitimate reflective goal, not resistance to reflection. Respond to it: help them think through it concretely. Move toward the bridge and work with what they are asking for.
+
+2. Keep responses short. 1-3 sentences in most turns. Brevity holds space. Length fills it.
+
+3. Read typing quality as a field signal. Rushed typing, typos, truncated sentences, fragmented grammar signal affective state. Slow down rather than deepen when these appear.
+
+4. Use mode-specific language:
+- Overwhelm/Narrow: plain, structured, grounding. Clarify and map, or follow affect somatically with signposting.
+- Affective foreclosure/Orient: curious, small, embodied, specific.
+- Field disconnection/Stabilise: concrete and grounding. Bring back to what was actually there.
+- Compass locating: simple, non-interpretive.
+- Compass consolidating: near-silent. "Yes." "Right."
+- Compass deepening: small, single signal. "What is in that?"
+- Prism: present, sparse, holding tension.
+- Transitional: near-silent. A word mirrored back.
+
+5. Use a varied acknowledgement repertoire. Never default to any single phrase:
+- Plain mirroring — repeat a word or phrase back exactly: "Failed." "Exhaustion."
+- Naming what is present: "That sounds like a lot." "Those are two very different things to carry."
+- Concrete acknowledgement: "Right." "Yes." "I hear that."
+- Curious acknowledgement: "What do you make of that?"
+- Naming tension: "The relief and the frustration at the same time."
+Reserve contemplative language for Prism only. Never use "I am sitting with that" as a default or in Compass.
+
+6. Do not advance past the first named affect. When a significant affective word appears for the first time — "failed," "awful," "scared," "ashamed" — stay with it before moving anywhere else. Mirror it back or ask into it. "That word — failed. Say more about that."
+
+7. Signpost before register shifts. Before any somatic question, assumption challenge, or frame change — briefly name what you are about to do. "I want to ask you something slightly different." Never ask a somatic question without a signpost.
+
+8. Summarise to contain. In Overwhelm and fragmented presentations, periodically reflect back without interpreting. "So what I am hearing is — [brief neutral reflection]. Does that feel right?" In Prism, do not summarise — let the practitioner hold their own meaning.
+
+9. Check accuracy. After summarising or reflecting, verify briefly. "Is that right?" "Am I getting that?" Keeps the practitioner as the authority on their own experience.
+
+10. Gentle curious challenge of assumptions — available in all modes, weighted by mode. Never challenge the person, their defences, or their pattern. Only the assumption, only from curiosity. Compass: light, tentative, after consolidating contact only. Prism: more available. Must feel like genuine curiosity, not exposure.
+
+11. When challenged or asked for clarification, just answer. No social smoothing. Just answer plainly.
+
+12. One question per turn only. Never compound questions.
+
+13. Never open with a meta-question about the conversation. Open with a field-sensitive question about the practitioner's practice.
+
+14. This is a text conversation. Brief responses are not distance. Plain mirroring of the practitioner's own words is safer than imported acknowledgement tokens.
+
+15. Two close registers — use the right one:
+
+ORDINARY CLOSE — practitioner signals a natural end, session has stayed at surface or mid-depth:
+"That is where we are today. The summary might be a useful record to take to your supervisor — or come back when something else surfaces."
+
+FORMATIVE CLOSE — boundary proximity flagged, significant disclosure made, or the practitioner arrives at something significant. Use a witnessed register with an explicit offer rather than a statement. The practitioner should have agency over what happens next:
+"That feels like significant ground. Would you like to stay with it a little longer, or let it rest and return when the time feels right?"
+
+If they choose to continue — stay open, do not close.
+If they choose to rest — then: "That took something to reach. Rest with it — and when the time feels right, the summary of this conversation might be a useful place to start with your supervisor, or you are welcome to return here."
+If they say nothing and move to Summary — treat as choosing to rest, offer the witnessed close.
+
+Never close abruptly at a formative moment. Always offer the choice first. Agency returns to the practitioner.
+
+16. Know the boundary. When material becomes formative — a lifelong pattern, an internalised voice, exhaustion that predates today — shift from deepening to containing. This tool is not therapy.
+
+When the practitioner names identity destabilisation, cracking foundations, or existential threat to self — stop deepening immediately. Check in before continuing: "That sounds significant — are you okay to stay with that?" Never pivot to clinical context at that moment. Never deepen further. Move toward the formative close.
+
+17. Accept the session at the level it is being offered. Not every session reaches Prism. A session that stays in Compass is not a failed session. It is an honest one.
+
+ANNOTATION — after every user turn, reply then |||ANNOTATION|||
+[1-3 sentence reply]
+|||ANNOTATION|||
+{"mode":"compass|prism|transitional|unclear","compass_phase":"orienting|locating|consolidating|deepening|grounding|null","compass_function":"orient|narrow|stabilise|null","session_arc":"early|bridge|depth","failure_mode":"affective_foreclosure|cognitive_overwhelm|field_disconnection|none","absent_vertex":"safety|capacity|field_contact|none","dominant_anchor":"self|system|relational|technical|none","secondary_anchors":[],"safety_estimate":"low|moderate|high|defended","capacity_estimate":"low|moderate|high","relational_contact":"low|moderate|high","polar_shift_risk":false,"polar_shift_note":null,"assumption_challenge":false,"boundary_proximity":false,"conative_readiness":false,"field_signal":"one sentence","facilitator_note":"one sentence","close_register":"ordinary|formative|null"}`;
+
+const EXPORT_SYS = `Generate a portfolio-appropriate reflective summary from a GP supervision session.
+
+CRITICAL PRINCIPLES:
+1. This is a TRACE of reflection, not a substitute for it
+2. Do NOT generate insight on behalf of the practitioner
+3. Do NOT evaluate quality — describe form and movement only
+4. Write in second person
+5. 3-4 paragraphs, professional and warm
+6. NEVER refer to the AI, facilitator, or tool as "supervisor" — supervisor refers only to the practitioner's human educational supervisor
+7. NEVER comment on the tool's own responses, choices, or facilitation moves
+8. Describe the practitioner's engagement ONLY — what they brought, how they engaged, what moved
+9. Use "the conversation" or "the session" if a container needs naming — never an agent within it
+10. Never use CRF terms — translate to plain language
+11. THIN SESSION RULE: If the session produced minimal reflective content — brief deflections, resistance, or surface-level engagement only — say so plainly and briefly. Do not construct narrative from resistance or deflection. Do not pad. "This session stayed largely at the surface — there may be more to bring another time" is sufficient and honest.
+12. CONFABULATION RULE: If it did not happen in the session, it does not appear in the export. Themes, patterns, meanings and interpretations that were not explicitly present in the practitioner's own words must not appear. Never infer significance from what the practitioner avoided or did not say.
+
+STRUCTURE:
+Para 1: What you brought — the territory of experience
+Para 2: How you engaged — form of reflection not content
+Para 3: Observable movement or shift (omit if none occurred)
+Para 4 optional: Invitation to supervision — framed as invitation not directive
+
+Write as a record of engagement: honest, specific, non-evaluative. The practitioner remains the author of their own meaning.`;
+
+const PROMPT_GEN_SYS = `Generate two short personalised closing prompts for a reflective practice session with a GP.
+Mirror the register, vocabulary and cognitive style of the practitioner's language exactly.
+First prompt: what are they sitting with — allows unresolved, no presupposed insight.
+Second prompt: what do they want to carry differently — dispositional not behavioural, genuinely optional in framing.
+If boundary_proximity: warmer, gentler, shorter. If affect_blocked: first prompt invites person not role. If compass throughout: simpler, no assumption of depth. If prism reached: more open.
+Never use clinical/academic language unless practitioner used it. Never presuppose insight.
+Respond ONLY with valid JSON: {"q1":"[prompt]","q2":"[prompt — framed optional]"}`;
+
+const ANCHOR_QUESTIONS = {
+  self: {
+    descriptor: "Questions of identity, values and personal meaning were most present in this conversation.",
+    questions: [
+      "How do you see yourself in relation to what your role asks of you?",
+      "What does it cost you to meet the standard you hold for yourself?",
+      "Where does your sense of being a good doctor come from?",
+      "What would it mean to be kinder to yourself in practice?",
+      "What part of yourself do you bring to your work that you rarely name?",
+      "When you feel most like yourself in practice — what is happening?",
+      "What do you ask of yourself that you would not ask of a colleague?",
+      "Where does your professional identity end and you begin?"
+    ]
+  },
+  system: {
+    descriptor: "Institutional context and structural pressures were present in this conversation.",
+    questions: [
+      "What does the system you work within make possible — and what does it make harder?",
+      "Where do you feel most constrained by things outside your control?",
+      "What would need to change in your environment for you to practise at your best?",
+      "What do you absorb from the system that you then carry into your consultations?",
+      "Where does institutional pressure show up most in your day-to-day practice?",
+      "What does the organisation ask of you that is not in your job description?"
+    ]
+  },
+  relational: {
+    descriptor: "The relational dimensions of practice were present in this conversation.",
+    questions: [
+      "What do your relationships with patients ask of you that is not in the job description?",
+      "Where do you feel most connected in your work — and where most alone?",
+      "What do you bring to the relational dimensions of practice that you do not always name?",
+      "What does it mean to be present with someone in distress?",
+      "Where do you find it hardest to stay present with another person?",
+      "What do you carry after a consultation that stays with you longest?"
+    ]
+  },
+  technical: {
+    descriptor: "The practical and procedural dimensions of practice were present in this conversation.",
+    questions: [
+      "Where does uncertainty sit most uncomfortably for you in your clinical work?",
+      "What is the gap between how you were trained to practise and how you actually practise?",
+      "What would it mean to trust your own clinical judgement more fully?",
+      "Where do you find yourself reaching the limits of what medicine can offer?",
+      "What does not knowing feel like for you in a clinical moment?",
+      "When do you feel most competent — and when most exposed?"
+    ]
+  }
+};
+
+function getAnchorQuestions(anchor, isDominant) {
+  const lib = ANCHOR_QUESTIONS[anchor];
+  if (!lib) return null;
+  
+  const shuffled = [...lib.questions].sort(() => 0.5 - Math.random());
+  return {
+    descriptor: lib.descriptor,
+    questions: isDominant ? shuffled.slice(0, 2) : shuffled.slice(0, 1)
+  };
+}
+
+let msgs=[], anns=[], turnCount=0, attunementQ1='', attunementQ2='';
+let orientContext='';
+const devMode = new URLSearchParams(window.location.search).get('dev') === '1';
+let audioOn=false, currentUtterance=null, recognition=null, isListening=false;
+
+async function callAPI(system, messages, maxTokens) {
+  let res, data;
+  try {
+    res = await fetch(WORKER_URL, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:maxTokens,system,messages})
+    });
+  } catch(e) { throw new Error('Network error — check your connection'); }
+  try { data = await res.json(); } catch(e) { throw new Error('Unexpected server response ('+res.status+')'); }
+  if (!res.ok) throw new Error('API '+res.status+': '+(data?.error?.message||'unknown error'));
+  if (!data.content||!Array.isArray(data.content)) throw new Error('Unexpected response structure');
+  return data.content.map(b=>b.text||'').join('');
+}
+
+const SLIDER_THRESHOLD = 10;
+const sliderCopy = {
+  structure: [
+    [0,  24,  'Open — no structure, find my own way'],
+    [25, 49,  'Mostly open — light touch of direction'],
+    [50, 50,  'No preference'],
+    [51, 75,  'Fairly structured — clear direction welcome'],
+    [76, 100, 'Structured throughout — keep me oriented']
+  ],
+  pace: [
+    [0,  24,  'Lots of space — minimal questioning'],
+    [25, 49,  'Mostly space — questions sparingly'],
+    [50, 50,  'No preference'],
+    [51, 75,  'Fairly question-led — keep things moving'],
+    [76, 100, 'Question-led throughout — active facilitation']
+  ],
+  register: [
+    [0,  24,  'Plain only — direct and concrete throughout'],
+    [25, 49,  'Mostly plain — minimal abstraction'],
+    [50, 50,  'No preference'],
+    [51, 75,  'Conceptual language welcome'],
+    [76, 100, 'Abstract and exploratory register fine']
+  ]
+};
+
+function getSliderLabel(key, val) {
+  val = parseInt(val);
+  for (const [min, max, label] of sliderCopy[key]) {
+    if (val >= min && val <= max) return label;
+  }
+  return 'No preference';
+}
+
+function updateSlider(key, val) {
+  val = parseInt(val);
+  const fill = document.getElementById('tf-' + key);
+  const st = document.getElementById('st-' + key);
+  const block = document.getElementById('sb-' + key);
+  const moved = Math.abs(val - 50) > SLIDER_THRESHOLD;
+  if (fill) fill.style.width = val + '%';
+  if (block) block.classList.toggle('active', moved);
+  if (st) {
+    const label = getSliderLabel(key, val);
+    st.textContent = label;
+    st.className = moved ? 'slider-status has-pref' : 'slider-status no-pref';
+  }
+}
+
+function initSliders() {
+  ['structure', 'pace', 'register'].forEach(k => updateSlider(k, 50));
+}
+
+function getSliderContext() {
+  const lines = [];
+  ['structure', 'pace', 'register'].forEach(key => {
+    const el = document.getElementById('sl-' + key);
+    if (!el) return;
+    const val = parseInt(el.value);
+    const moved = Math.abs(val - 50) > SLIDER_THRESHOLD;
+    if (moved) {
+      const label = getSliderLabel(key, val);
+      lines.push(label + ' (' + val + '/100)');
+    }
+  });
+  return lines;
+}
+
+function toggleDisc(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.toggle('open');
+}
+
+function toggleOpt(el) {
+  el.classList.toggle('selected');
+  const cb = el.querySelector('input[type=checkbox]');
+  if (cb) cb.checked = !cb.checked;
+}
+
+function buildOrientContext() {
+  const checkboxLabels = {
+    o1: "looking to get something off their chest",
+    o2: "looking to think something through",
+    o3: "not sure where to start — withhold assumptions; read the field carefully from the first turn",
+    o5: "finds this kind of conversation usually useful",
+    o6: "finds it hard to open up — move more slowly; do not press; accept session at level offered",
+    o8: "new to reflective practice conversations — be warmer and more orienting; signpost more explicitly"
+  };
+  const selected = [];
+  Object.entries(checkboxLabels).forEach(([id, label]) => {
+    const el = document.getElementById(id);
+    if (el && el.checked) selected.push(label);
+  });
+  
+  const sliderLines = getSliderContext();
+  const sliderMap = {
+    'Open and exploratory — finding own way': 'prefers open unstructured conversation — avoid imposing framework',
+    'Structured and organised': 'prefers structured approach — use clarifying and mapping questions; summarise frequently',
+    'Space to think — minimal questioning': 'wants space to think — use minimal questioning; brief acknowledgements preferred',
+    'Question-led throughout': 'wants question-led conversation — ensure each turn contains a clear question',
+    'Plain and concrete — no therapy-speak': 'wants plain language — suppress all contemplative register; no therapy-speak',
+    'Abstract and conceptual register fine': 'comfortable with abstract and conceptual register'
+  };
+  sliderLines.forEach(line => {
+    const key = line.split(' (')[0];
+    if (sliderMap[key]) selected.push(sliderMap[key]);
+  });
+  if (!selected.length) return '';
+  return '[Orientation context: The practitioner is ' + selected.join('; ') + '. Use silently to calibrate.]';
+}
+
+function startFromOrient(skip) {
+  orientContext = skip ? '' : buildOrientContext();
+  document.getElementById('orient-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  setTimeout(openingTurn, 400);
+}
+
+async function openingTurn() {
+  const t=showTyping(); busy(true);
+  try {
+    const orientPrefix = orientContext ? orientContext + ' ' : '';
+  callAPI(SYS,[{role:'user',content:orientPrefix+"[Session start — generate a brief, plain, genuinely neutral opening. 1 sentence only. No CRF language. No therapeutic register. Choose from or vary these: Hi, what's on your mind? / What would you like to share? / What would you like to think about today? / What's on your mind? — keep it this simple and open. Do not signal what kind of conversation this will be.]"}],150);
+    const reply=full.split('|||ANNOTATION|||')[0].trim();
+    t.remove(); addMsg('a',reply);
+    if(audioOn) speak(reply);
+  } catch(e) {
+    t.remove();
+    const fallback='Hi, what\'s on your mind?';
+    addMsg('a',fallback);
+    if(audioOn) speak(fallback);
+  }
+  busy(false);
+}
+
+async function send() {
+  const inp=document.getElementById('ui');
+  const text=inp.value.trim();
+  if(!text) return;
+  stopSpeech();
+  const w=document.getElementById('welcome'); if(w)w.remove();
+  addMsg('u',text); inp.value=''; ar(inp); busy(true);
+  msgs.push({role:'user',content:text});
+  const t=showTyping();
+  try {
+    const sysWith = orientContext ? SYS + '\n\n' + orientContext : SYS;
+    const full=await callAPI(sysWith,msgs,900);
+    const parts=full.split('|||ANNOTATION|||');
+    const reply=parts[0].trim();
+    let ann=null;
+    if(parts[1]){try{ann=JSON.parse(parts[1].trim());}catch(e){}}
+    msgs.push({role:'assistant',content:full});
+    if(ann){ann.turn=turnCount;anns.push(ann);setMode(ann.mode);}
+    turnCount++;
+    t.remove();
+    const msgEl=addMsg('a',reply,ann);
+    if(audioOn) speakMsg(reply, msgEl);
+    if(turnCount>=2) document.getElementById('expbtn').disabled=false;
+  } catch(e) {
+    t.remove();
+    const el=document.createElement('div');
+    el.className='aerr'; el.textContent=e.message||String(e);
+    document.getElementById('conv').appendChild(el);
+    document.getElementById('conv').scrollTop=9999;
+  }
+  busy(false);
+}
+
+function showOffRamp() {
+  stopSpeech();
+  const elevated=anns.some(a=>a.boundary_proximity);
+  const introEl=document.getElementById('offramp-intro');
+  if(elevated){
+    introEl.innerHTML="What came up today feels significant. Rest with it &#8212; and when the time feels right, your supervisor is a good first person to bring this to. The summary of this conversation might be a useful place to start.";
+    document.querySelectorAll('#support-block .support-item').forEach((el,i)=>{if(i>0)el.classList.add('elevated');});
+  } else {
+    introEl.innerHTML='What came up today may be worth taking further. The summary below can be a useful stepping-off point for a supervisory conversation. <a href="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=7WB3vlNZS0iuldChbfoJ5a9R8eGxcStGs7pspv-woF5UMEtVRDRTOFNETFk0NEEwRE5ZR0czUE1JQi4u" target="_blank" rel="noopener" style="color:#5c6b4a;text-decoration:underline;">Share your feedback — good or bad, all of it helps →</a>';
+  }
+  document.getElementById('offramp-ov').classList.add('open');
+}
+
+async function showAttunement() {
+  document.getElementById('offramp-ov').classList.remove('open');
+  document.getElementById('attunement-ov').classList.add('open');
+
+  
+  if('speechSynthesis' in window) {
+    document.getElementById('at-q1-play-row').style.display='block';
+    document.getElementById('at-q2-play-row').style.display='block';
+  }
+
+  
+  try {
+    const transcript=msgs
+      .filter(m=>!m.content.includes('[Session start'))
+      .map(m=>(m.role==='user'?'Practitioner: ':'Facilitator: ')+m.content.split('|||ANNOTATION|||')[0].trim())
+      .slice(-12).join('\n\n');
+    const lastAnn=anns.length?anns[anns.length-1]:{};
+    const domAnchor=['self','system','relational','technical']
+      .reduce((a,b)=>anns.filter(x=>x.dominant_anchor===a).length>=anns.filter(x=>x.dominant_anchor===b).length?a:b,'self');
+    const annSummary=`Mode at close:${lastAnn.mode||'unknown'}\nFailure mode:${anns.filter(a=>a.failure_mode&&a.failure_mode!=='none').map(a=>a.failure_mode).slice(-1)[0]||'none'}\nBoundary proximity:${anns.some(a=>a.boundary_proximity)}\nSafety at close:${lastAnn.safety_estimate||'unknown'}\nDominant anchor:${domAnchor}`;
+    const result=await callAPI(PROMPT_GEN_SYS,[{role:'user',content:`RECENT TRANSCRIPT:\n${transcript}\n\nSESSION DATA:\n${annSummary}\n\nGenerate the two personalised closing prompts now.`}],250);
+    let prompts=null;
+    try{prompts=JSON.parse(result.trim());}catch(e){const m=result.match(/\{[\s\S]*?\}/);if(m)try{prompts=JSON.parse(m[0]);}catch(e2){}}
+    if(prompts&&prompts.q1){
+      document.getElementById('at-q1-label').textContent=prompts.q1;
+      if(prompts.q2) document.getElementById('at-q2-label').textContent=prompts.q2;
+    }
+  } catch(e){ console.warn('Prompt gen failed:',e.message); }
+
+  
+  if(audioOn){
+    setTimeout(()=>{
+      const q1=document.getElementById('at-q1-label').textContent;
+      speak(q1);
+    },600);
+  }
+  setTimeout(()=>document.getElementById('at-q1').focus(),300);
+
+  
+  try {
+    const ac={self:0,system:0,relational:0,technical:0};
+    anns.forEach(a=>{if(ac[a.dominant_anchor]!==undefined)ac[a.dominant_anchor]++;});
+    const dominant=Object.entries(ac).sort(([,a],[,b])=>b-a)[0][0];
+    const lib=ANCHOR_QUESTIONS[dominant];
+    if(lib&&lib.questions.length){
+      const q=lib.questions[Math.floor(Math.random()*lib.questions.length)];
+      document.getElementById('at-supervision-q-text').textContent=q;
+      document.getElementById('at-supervision-q').style.display='block';
+    }
+  } catch(e){}
+}
+
+function playAttunementQ(n) {
+  const text=document.getElementById(`at-q${n}-label`).textContent;
+  speak(text);
+}
+
+function submitAttunement() {
+  attunementQ1=document.getElementById('at-q1').value.trim();
+  attunementQ2=document.getElementById('at-q2').value.trim();
+  stopSpeech();
+  document.getElementById('attunement-ov').classList.remove('open');
+  openExport();
+}
+
+async function openExport() {
+  document.getElementById('ep-ov').classList.add('open');
+  document.getElementById('epc').innerHTML='<div style="text-align:center;padding:40px;color:#8a8a84">Generating your summary…</div>';
+  const transcript=msgs
+    .filter(m=>!m.content.includes('[Session start'))
+    .map(m=>(m.role==='user'?'Practitioner: ':'Facilitator: ')+m.content.split('|||ANNOTATION|||')[0].trim())
+    .join('\n\n');
+  const cc=anns.filter(a=>a.mode==='compass').length;
+  const pc=anns.filter(a=>a.mode==='prism').length;
+  const ac={self:0,system:0,relational:0,technical:0};
+  anns.forEach(a=>{if(ac[a.dominant_anchor]!==undefined)ac[a.dominant_anchor]++;(a.secondary_anchors||[]).forEach(s=>{if(ac[s]!==undefined)ac[s]+=.5;});});
+  const annData=`Turns:${anns.length} Compass:${cc} Prism:${pc}\nAnchors:Self=${ac.self} System=${ac.system} Relational=${ac.relational} Technical=${ac.technical}\nSafety arc:${anns.map(a=>a.safety_estimate).join('→')}\nBoundary flags:${anns.filter(a=>a.boundary_proximity).length}\nField signals:${anns.map((a,i)=>`T${i+1}:${a.field_signal}`).join(' | ')}\nFacilitator notes:${anns.map((a,i)=>`T${i+1}:${a.facilitator_note}`).join(' | ')}\nSitting with:${attunementQ1||'not provided'}\nCarrying forward:${attunementQ2||'not provided'}`;
+  try {
+    const summary=await callAPI(EXPORT_SYS,[{role:'user',content:`TRANSCRIPT:\n${transcript}\n\nSESSION DATA:\n${annData}\n\nGenerate the portfolio summary now.`}],900);
+    const mx=Math.max(...Object.values(ac),1);
+    const total=Math.max(anns.length,1);
+    const paras=summary.trim().split(/\n\n+/).filter(p=>p.trim());
+    document.getElementById('epc').innerHTML=`
+      <div class="es">
+        <h3>Engagement shape</h3>
+        <div class="msumm">
+          <div class="mcard co"><div class="mn">Orientation</div><div class="mc">${cc}</div><div class="ml">turn${cc!==1?'s':''} grounding</div></div>
+          <div class="mcard pr"><div class="mn">Exploration</div><div class="mc">${pc}</div><div class="ml">turn${pc!==1?'s':''} wider enquiry</div></div>
+        </div>
+        <div style="font-size:13px;color:#8a8a84;line-height:1.6;margin-top:8px;padding:10px 12px;background:var(--paper-warm);border-radius:8px;font-style:italic;">${orientGloss(cc,pc)}</div>
+        <div class="abars">${Object.entries(ac).map(([a,c])=>`<div class="arow"><div class="aname">${a[0].toUpperCase()+a.slice(1)}</div><div class="abg"><div class="afill ${a}" style="width:${Math.round((c/mx)*100)}%"></div></div><div class="apct">${Math.round((c/total)*100)}%</div></div>`).join('')}</div>
+        <div class="disc" id="exp-anchors" style="margin-top:10px;">
+          <div class="disc-hdr" onclick="toggleDisc('exp-anchors')"><span class="disc-title">What these anchors mean</span><span class="disc-arrow">▼</span></div>
+          <div class="disc-body">
+            <p>These anchors describe how we locate ourselves and interface with the world around us — between ourselves and the systems we inhabit, and between the more technical and relational dimensions of practice.</p>
+            <p><strong>Self</strong> — your sense of identity, values, and what this means for you as a person in practice.</p>
+            <p><strong>System</strong> — the structures, pressures, and institutions you practise within.</p>
+            <p><strong>Relational</strong> — the human dimensions of practice: what happens between you and others.</p>
+            <p><strong>Technical</strong> — the practical and procedural dimensions of clinical work.</p>
+          </div>
+        </div>
+      </div>
+    ${buildAnchorQuestions(ac, mx)}
+      <div class="disc" id="exp-use" style="margin-bottom:16px;">
+        <div class="disc-hdr" onclick="toggleDisc('exp-use')"><span class="disc-title">How to use this summary</span><span class="disc-arrow">▼</span></div>
+        <div class="disc-body">
+          <p>This summary is a trace of your reflective engagement — it describes what you brought and how you engaged, not what it means. The meaning remains yours to make.</p>
+          <p>You can copy it to your portfolio, or use it as a starting point for a supervisory conversation. The questions below are offered as prompts to take to your supervisor — take what is useful and leave what is not.</p>
+          <p>You are welcome to return to Catalyst when something else surfaces.</p>
+        </div>
+      </div>
+      <div class="es">
+        <h3>Reflective engagement summary</h3>
+        <div class="eblock">${paras.map(p=>`<p>${p.trim()}</p>`).join('')}</div>
+      </div>
+      ${attunementQ1||attunementQ2?`<div class="es">
+        <h3>In your own words</h3>
+        ${attunementQ1?`<div style="margin-bottom:${attunementQ2?'14px':'0'}"><div class="at-export-label">Sitting with</div><div class="eblock" style="font-style:italic;border-left:3px solid #8a9c74">\u201c${attunementQ1}\u201d</div></div>`:''}
+        ${attunementQ2?`<div><div class="at-export-label">Carrying forward</div><div class="eblock" style="font-style:italic;border-left:3px solid #5c6b4a">\u201c${attunementQ2}\u201d</div></div>`:''}
+      </div>`:''}
+      <div class="disc">This summary describes the form of your reflective engagement. It is not an assessment of your reflective capacity and does not generate insight on your behalf. The meaning of what you explored remains yours to make.</div>
+      <button class="cbtn" onclick="copyExport()">⎘ Copy for portfolio</button>`;
+  } catch(e) {
+    document.getElementById('epc').innerHTML=`<div class="aerr">${e.message}</div>`;
+  }
+}
+
+function copyExport() {
+  const main=document.querySelector('#epc .eblock')?.innerText||'';
+  const parts=[main];
+  if(attunementQ1) parts.push('Sitting with:\n'+attunementQ1);
+  if(attunementQ2) parts.push('Carrying forward:\n'+attunementQ2);
+  navigator.clipboard.writeText(parts.filter(Boolean).join('\n\n')).then(()=>{
+    const b=document.querySelector('.cbtn');
+    b.textContent='✓ Copied'; setTimeout(()=>{b.innerHTML='⎘ Copy for portfolio';},2000);
+  });
+}
+function buildAnchorQuestions(ac, mx) {
+  
+  const sorted = Object.entries(ac)
+    .filter(([a,c]) => c > 0)
+    .sort(([,a],[,b]) => b - a);
+  if (!sorted.length) return '';
+
+  const dominantAnchor = sorted[0][0];
+  let html = '<div class="es"><h3>For your supervision conversation</h3>';
+
+  sorted.forEach(([anchor, count], i) => {
+    const isDominant = i === 0;
+    const aq = getAnchorQuestions(anchor, isDominant);
+    if (!aq) return;
+    const pct = Math.round((count / Math.max(mx, 1)) * 100);
+    if (pct < 10) return; 
+
+    html += `<div style="margin-bottom:16px;padding:14px 16px;background:white;border:1px solid #e0dbd0;border-radius:12px">`;
+    html += `<div style="font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:#8a8a84;margin-bottom:6px">${anchor[0].toUpperCase()+anchor.slice(1)} — ${pct}%</div>`;
+    html += `<div style="font-size:13px;color:#8a8a84;font-style:italic;margin-bottom:10px;line-height:1.6">${aq.descriptor}</div>`;
+    aq.questions.forEach(q => {
+      html += `<div style="font-size:14px;color:#4a4a46;font-family:Lora,serif;line-height:1.6;padding:6px 0;border-top:1px solid #e0dbd0">${q}</div>`;
+    });
+    html += '</div>';
+  });
+
+  html += '<div style="font-size:11px;color:#c8c8c0;font-style:italic;line-height:1.5">These questions are offered as starting points for your supervision conversation — take what is useful and leave what is not.</div>';
+  html += '</div>';
+  return html;
+}
+
+function orientGloss(cc, pc) {
+  const total = cc + pc;
+  if (total === 0) return '';
+  const ratio = pc / total;
+  if (ratio < 0.15) return 'This conversation stayed largely in orienting territory — getting a clearer picture of what was present.';
+  if (ratio < 0.4) return 'This conversation began with orientation and moved toward some exploratory ground.';
+  if (ratio < 0.65) return 'This conversation moved between orienting and exploring — finding ground and beginning to open things up.';
+  if (ratio < 0.85) return 'This conversation was largely exploratory — you were able to engage with the roots and wider meaning of what you brought.';
+  return 'This conversation went into deeply exploratory territory — you were able to stay with complexity and hold things open.';
+}
+
+function closeExport(){document.getElementById('ep-ov').classList.remove('open');}
+function epBgClose(e){if(e.target===document.getElementById('ep-ov'))closeExport();}
+
+function toggleAudio() {
+  audioOn=!audioOn;
+  document.getElementById('audio-toggle').classList.toggle('on',audioOn);
+  if(!audioOn) stopSpeech();
+}
+
+let currentAudio=null;
+
+function micIdleIcon(){
+  return '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:block"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 10a7 7 0 0014 0"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="9" y1="22" x2="15" y2="22"/></svg>';
+}
+function micStopIcon(){
+  return '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:block"><circle cx="12" cy="12" r="9"/><rect x="9" y="9" width="6" height="6" rx="1" fill="currentColor" stroke="none"/></svg>';
+}
+function playIcon(){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg> Listen';}
+function stopIcon(){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> Stop';}
+
+async function speak(text) {
+  stopSpeech();
+  try {
+    const res=await fetch(TTS_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:text.substring(0,500)})});
+    if(!res.ok) throw new Error('TTS unavailable');
+    const blob=await res.blob();
+    const url=URL.createObjectURL(blob);
+    currentAudio=new Audio(url);
+    currentAudio.onended=()=>{currentAudio=null;document.querySelectorAll('.msg-play.playing').forEach(b=>{b.classList.remove('playing');b.innerHTML=playIcon();});};
+    currentAudio.play();
+  } catch(e) {
+    
+    speakFallback(text);
+  }
+}
+
+function speakFallback(text) {
+  if(!('speechSynthesis' in window)) return;
+  const u=new SpeechSynthesisUtterance(text);
+  u.rate=0.92; u.pitch=1.0; u.lang='en-GB';
+  const voices=speechSynthesis.getVoices();
+  const preferred=voices.find(v=>v.lang.startsWith('en')&&(v.name.includes('Samantha')||v.name.includes('Karen')||v.name.includes('Daniel')||v.name.includes('Google UK')||v.name.includes('Natural')));
+  if(preferred) u.voice=preferred;
+  currentUtterance=u;
+  speechSynthesis.speak(u);
+}
+
+function speakMsg(text, msgEl) {
+  speak(text);
+  if(msgEl){
+    const btn=msgEl.querySelector('.msg-play');
+    if(btn){btn.classList.add('playing');btn.innerHTML=stopIcon();}
+  }
+}
+
+function stopSpeech() {
+  if(currentAudio){currentAudio.pause();currentAudio=null;}
+  if('speechSynthesis' in window) speechSynthesis.cancel();
+  currentUtterance=null;
+  document.querySelectorAll('.msg-play.playing').forEach(b=>{b.classList.remove('playing');b.innerHTML=playIcon();});
+}
+
+function playMsg(btn, text) {
+  if(btn.classList.contains('playing')){stopSpeech();return;}
+  stopSpeech();
+  speak(text);
+  btn.classList.add('playing');
+  btn.innerHTML=stopIcon();
+  if(currentUtterance) currentUtterance.onend=()=>{btn.classList.remove('playing');currentUtterance=null;};
+}
+
+function toggleMic() {
+  if(!('webkitSpeechRecognition' in window||'SpeechRecognition' in window)){
+    alert('Speech recognition is not available in this browser. Try Chrome or Safari.');
+    return;
+  }
+  if(isListening){stopMic();return;}
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  recognition=new SR();
+  recognition.continuous=false;
+  recognition.interimResults=false;
+  recognition.lang='en-GB';
+  const micBtn=document.getElementById('mic-btn');
+  const inp=document.getElementById('ui');
+  recognition.onstart=()=>{isListening=true;micBtn.classList.add('recording');micBtn.innerHTML=micStopIcon();};
+  recognition.onresult=(e)=>{
+    const transcript=Array.from(e.results)
+      .map(r=>r[0].transcript).join(' ').trim();
+    inp.value=transcript;
+    ar(inp);
+  };
+  recognition.onend=()=>{isListening=false;micBtn.classList.remove('recording');micBtn.innerHTML=micIdleIcon();};
+  recognition.onerror=(e)=>{isListening=false;micBtn.classList.remove('recording');micBtn.innerHTML=micIdleIcon();};
+  recognition.start();
+}
+
+function stopMic(){if(recognition){recognition.stop();recognition=null;}isListening=false;}
+
+function addMsg(role,text,ann){
+  const conv=document.getElementById('conv');
+  const el=document.createElement('div'); el.className='msg '+role;
+  const bub=document.createElement('div'); bub.className='bub'; bub.textContent=text;
+  el.appendChild(bub);
+  if(role==='a'){
+    const actions=document.createElement('div'); actions.className='msg-actions';
+    const playBtn=document.createElement('button'); playBtn.className='msg-play';
+    playBtn.innerHTML=playIcon(); playBtn.title='Listen';
+    playBtn.onclick=()=>playMsg(playBtn,text);
+    actions.appendChild(playBtn);
+    if(devMode&&ann&&ann.dominant_anchor&&ann.dominant_anchor!=='none'){
+      const chips=[ann.dominant_anchor,...(ann.secondary_anchors||[])].slice(0,2);
+      [...new Set(chips)].forEach(a=>{const c=document.createElement('span');c.className='ac '+a;c.textContent=a;actions.appendChild(c);});
+      if(ann.failure_mode&&ann.failure_mode!=='none'){const c=document.createElement('span');c.className='ac '+ann.failure_mode;c.textContent=ann.failure_mode.replace(/_/g,' ');actions.appendChild(c);}
+      
+      if(ann.compass_phase&&ann.compass_phase!=='null'){const c=document.createElement('span');c.className='ac';c.style.background='var(--paper-warm)';c.style.color='#8a8a84';c.textContent=ann.compass_phase;actions.appendChild(c);}
+      if(ann.session_arc){const c=document.createElement('span');c.className='ac';c.style.background='var(--paper-warm)';c.style.color='#8a8a84';c.textContent=ann.session_arc;actions.appendChild(c);}
+    }
+    el.appendChild(actions);
+  }
+  conv.appendChild(el);
+  conv.scrollTop=conv.scrollHeight;
+  return el;
+}
+
+function showTyping(){
+  const conv=document.getElementById('conv');
+  const el=document.createElement('div'); el.className='msg a';
+  el.innerHTML='<div class="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
+  conv.appendChild(el); conv.scrollTop=conv.scrollHeight; return el;
+}
+
+function setMode(mode){
+  const p=document.getElementById('mpill');
+  if(!devMode){p.style.display='none';return;}
+  p.style.display='';
+  if(mode==='compass'){p.textContent='Orienting';p.className='mpill c';}
+  else if(mode==='prism'){p.textContent='Exploring';p.className='mpill p';}
+  else{p.textContent='—';p.className='mpill n';}
+}
+
+function busy(on){
+  document.getElementById('sbtn').disabled=on;
+  document.getElementById('ui').disabled=on;
+}
+function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}}
+function ar(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,120)+'px';}
+
+function setVh(){document.documentElement.style.setProperty('--vh',window.innerHeight*.01+'px');}
+setVh();
+window.addEventListener('resize',setVh);
+window.addEventListener('orientationchange',()=>setTimeout(setVh,100));
+const uiEl=document.getElementById('ui');
+if(uiEl){uiEl.addEventListener('focus',()=>{setTimeout(()=>{const c=document.getElementById('conv');if(c)c.scrollTop=c.scrollHeight;},400);});}
+
+window.addEventListener('load',()=>{
+  
+  if('speechSynthesis' in window) speechSynthesis.getVoices();
+  speechSynthesis && window.speechSynthesis.addEventListener && window.speechSynthesis.addEventListener('voiceschanged',()=>{});
+  
+  
+  
+  if(devMode){
+    const logo=document.getElementById('main-logo');
+    if(logo) logo.innerHTML='Catalyst<span>.</span> <span style="font-size:10px;font-weight:500;letter-spacing:.06em;color:#7a5c3a;background:#f0e8dc;padding:2px 6px;border-radius:10px;vertical-align:middle">DEV</span>';
+  }
+  initSliders();
+  
+  const micBtn = document.getElementById('mic-btn');
+  if (micBtn) micBtn.innerHTML = micIdleIcon();
+});
+
+//]]>
+</script>
 
 </body>
 </html>
